@@ -120,15 +120,9 @@ In case a [Service] is discipline agnostic, the string all should be specified.
     ]
 ```
 
-### `accessiblefor free`
-*String* (mandatory): Field stating what kind of entity is being serialised. 
+### `accessible_for_free`
+*Boolean* (recommended)
 
-access_rights Object (recommended): The access right for the specific materialisation.
-
-It specifies the following properties:
-
-status String (mandatory): describe if the manifestation is open access (open), closed access (closed), under embargo (embargoed), restricted access (restricted), or unavailable for some reason (unavailable).
-description String (recommended): describe and qualify the specific status selected.
 
 ### `invocation_type`
 *List* (mandatory): the way the service is used or called. multiple values are possible, access rights and licenses are assued to be the same.
@@ -161,10 +155,17 @@ https://vocabs.sshopencloud.eu/browse/eosc-life-cycle-status/en/. Originally spe
 
 ````    
 
-###processing_language
+### processing_language
 *List* (optional) if applicable the content language the service is able to process, values provided as ISO369-2 language codes
 ```` json
 "processing_language": ["de","nl"]
+````
+
+### conformance
+*List* (optional)
+information on the service conforming to standards, ie. procol (protocol), input and output format
+````json
+"conformance": [ "https://doi.org/10.25504/FAIRsharing.dnE6tF"]
 ````
 
 
