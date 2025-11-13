@@ -125,13 +125,23 @@ In case a [Service] is discipline agnostic, the string all should be specified.
 
 
 ### `invocation_type`
-*List* (mandatory): the way the service is used or called. multiple values are possible, access rights and licenses are assued to be the same.
+*List* (mandatory): the way the service is used or called. multiple values are possible, access rights and licenses are assumed to be the same.
 values are specified by vocabulary https://vocabs.sshopencloud.eu/vocabularies/invocation-type/invocationTypeScheme
 
 ```json
-    "invocation_type": [ "RESTfull webservice", "Web Application"
+    "invocation_type": [ "RESTfull webservice", "Web Application", CLI
     ]
 ```
+### `API conformance`
+*List* (optional)
+List of API / protocol objects specifying endpoints and FAIRSharing and their interface or protocol specifications.
+```json
+    [{ 
+      “dc:conformsTo”: “https://doi.org/10.25504/FAIRsharing.dnE6tF”, 
+      “url”: “http://voparis-tap-maser.obspm.fr/tap”
+    }]
+```
+
 
 ### `life_cycle_status`
 *List* (optional): indicates the development cycle and/or maturity status of the service. values are by vocabulary
@@ -160,14 +170,6 @@ https://vocabs.sshopencloud.eu/browse/eosc-life-cycle-status/en/. Originally spe
 ```` json
 "processing_language": ["de","nl"]
 ````
-
-### conformance
-*List* (optional)
-information on the service conforming to standards, ie. procol (protocol), input and output format
-````json
-"conformance": [ "https://doi.org/10.25504/FAIRsharing.dnE6tF"]
-````
-
 
 ### `keywords`
 *List* (optional): list of keywords relevant for service discovery, values may be simple strings or concept URIs
