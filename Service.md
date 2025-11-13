@@ -113,7 +113,7 @@ the audience. value take from https://github.com/EOSC-PLATFORM/service-profile/b
 *List* (optional):  The disciplines for which a [Software Service] is dedicated. 
 The disciplines must be specified using the Library of Congress Classification codes, 
 available at https://id.loc.gov/authorities/classification (e.g. PA3000-PA3049 for classical literature). 
-In case a [Software Service] is discipline agnostic, the string all should be specified.
+In case a [Service] is discipline agnostic, the string all should be specified.
 ```json
     "discipline": [
         "QC790.95-QC791.8"
@@ -130,12 +130,6 @@ It specifies the following properties:
 status String (mandatory): describe if the manifestation is open access (open), closed access (closed), under embargo (embargoed), restricted access (restricted), or unavailable for some reason (unavailable).
 description String (recommended): describe and qualify the specific status selected.
 
-Needed for parsing purposes; fixed to `service`.
-
-```json
-    "entity_type": "service"
-```
-
 ### `invocation_type`
 *List* (mandatory): the way the service is used or called. multiple values are possible, access rights and licenses are assued to be the same.
 values are specified by vocabulary https://vocabs.sshopencloud.eu/vocabularies/invocation-type/invocationTypeScheme
@@ -149,8 +143,7 @@ values are specified by vocabulary https://vocabs.sshopencloud.eu/vocabularies/i
 *List* (optional): indicates the development cycle and/or maturity status of the service. values are by vocabulary
 https://vocabs.sshopencloud.eu/browse/eosc-life-cycle-status/en/. Originally specified in the EOSC Service Profile. Could extend with TRL classifications.
 ````json
-    "life_cycle_status": ["Production", "TRL6"
-]    
+    "life_cycle_status": ["Production", "TRL6"]    
 ````    
 
 ### `website`
@@ -165,7 +158,7 @@ https://vocabs.sshopencloud.eu/browse/eosc-life-cycle-status/en/. Originally spe
 *List* (optional): list of countries and regions where the service is made available eg. for license reasons 
 ````json
     "availability_geographic": ["European Union","United Kingdom"]
-]    
+
 ````    
 
 ###processing_language
@@ -178,14 +171,14 @@ https://vocabs.sshopencloud.eu/browse/eosc-life-cycle-status/en/. Originally spe
 ### `keywords`
 *List* (optional): list of keywords relevant for service discovery, values may be simple strings or concept URIs
 ````json
-    "keywords": ["https://www.wikidata.org/wiki/Q30642","parsing",]
-]    
+    "keywords": ["https://www.wikidata.org/wiki/Q30642","parsing","https://vocabs.dariah.eu/tadirah/parsing"]
+    
 ```` 
 
 ### `venues`
 *Object*  (optional): A service can be part of a website or online platform that serves as a centralized gateway to a variety of services, information, and resources
 ````json
-    "venue" 
+    "venue": 
         {   
             "local_identifier": "https://cloud.gate.ac.uk",
             "identifiers": {
@@ -205,7 +198,7 @@ https://vocabs.sshopencloud.eu/browse/eosc-life-cycle-status/en/. Originally spe
 *List* (optional) Research Product of type software or github link that the service is based on
 ````json
 "isDeploymentOf": [ "https://github.com/ufal/udpipe" ]
-]
+
 ````
 
 ### `contributions`
