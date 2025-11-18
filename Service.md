@@ -129,16 +129,16 @@ In case a [Service] is discipline agnostic, the string all should be specified.
 values are specified by vocabulary https://vocabs.sshopencloud.eu/vocabularies/invocation-type/invocationTypeScheme
 
 ```json
-    "invocation_type": [ "RESTfull webservice", "Web Application", CLI
+    "invocation_type": [ "RESTfull webservice", "Web Application", "CLI"
     ]
 ```
 ### `API conformance`
 *List* (optional)
 List of API / protocol objects specifying endpoints and FAIRSharing and their interface or protocol specifications.
 ```json
-    [{ 
-      “dc:conformsTo”: “https://doi.org/10.25504/FAIRsharing.dnE6tF”, 
-      “url”: “http://voparis-tap-maser.obspm.fr/tap”
+    "API_conformance": [{ 
+      “url”: “http://voparis-tap-maser.obspm.fr/tap”,
+      “dc:conformsTo”: “https://doi.org/10.25504/FAIRsharing.dnE6tF”
     }]
 ```
 
@@ -193,8 +193,7 @@ https://vocabs.sshopencloud.eu/browse/eosc-life-cycle-status/en/. Originally spe
             "site": "https://cloud.gate.ac.uk",
             "contributions": [ {"by": "University of Sheffield", "role": "operator"}
             ]            
-        }        
-]    
+        }          
 ````
 
 ### `isDeploymentOf`
