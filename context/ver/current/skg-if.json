@@ -22,9 +22,8 @@
 	"API_conformance": { "@id": "dcterms:conformsTo", "@type": { "uri", "uri" }},
         "life_cycle_status": { "@id": "sshopencloudvocabs:life_cycle_status", "@type": "@vocab", "@context": {"@base": "sshopencloudvocabs:life_cycle_status"} },
 	"website": "schema:website",
-	"availability_geographic": { "@id": "sshopencloudvocabs:eosc-geographical-availability", "type:" @vocab", @context": {"@base": "sshopencloudvocabs:availability_geographic"}},
-	"processing_resource_language": { "@id": "dcterms:requires", "@vocab", "@context": {"@base": http://www.loc.gov/standards/registry/vocabulary/iso639-2/
- }
+	"availability_geographic": { "@id": "sshopencloudvocabs:eosc-geographical-availability", "type": "@vocab", @context": {"@base": "sshopencloudvocabs:availability_geographic"}},
+	"processing_resource_language": { "@id": "dcterms:requires", "@vocab", "@context": {"@base": "http://www.loc.gov/standards/registry/vocabulary/iso639-2/" },
 	"deployment_of": { "@id": "schema:isBasedOn", "@type": "@id"  }
     }
 }
