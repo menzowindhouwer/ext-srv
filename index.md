@@ -9,6 +9,10 @@ nav_exclude: true
 
 # Service extension
 
+
+The Service extension has been developed in the context of the EU project [OSTrails](https://ostrails.eu) for better modelling the research process documentation.
+
+
 {: .highlight }
 This page serves to kickstart the development of your extension and provide guidance in the process. Once confident with the whole process, please delete the content of this page and replace it with an introductory description of the extension, comprehending its context, scope and objectives.
 
