@@ -113,44 +113,41 @@ the audience. value take from https://github.com/EOSC-PLATFORM/service-profile/b
 *List* (optional):  The disciplines for which a [Software Service] is dedicated. 
 The disciplines must be specified using the Library of Congress Classification codes, 
 available at https://id.loc.gov/authorities/classification (e.g. PA3000-PA3049 for classical literature). 
-In case a [Software Service] is discipline agnostic, the string all should be specified.
+In case a [Service] is discipline agnostic, the string all should be specified.
 ```json
     "discipline": [
         "QC790.95-QC791.8"
     ]
 ```
 
-### `accessiblefor free`
-*String* (mandatory): Field stating what kind of entity is being serialised. 
+### `accessible_for_free`
+*Boolean* (recommended)
 
-access_rights Object (recommended): The access right for the specific materialisation.
-
-It specifies the following properties:
-
-status String (mandatory): describe if the manifestation is open access (open), closed access (closed), under embargo (embargoed), restricted access (restricted), or unavailable for some reason (unavailable).
-description String (recommended): describe and qualify the specific status selected.
-
-Needed for parsing purposes; fixed to `service`.
-
-```json
-    "entity_type": "service"
-```
 
 ### `invocation_type`
-*List* (mandatory): the way the service is used or called. multiple values are possible, access rights and licenses are assued to be the same.
+*List* (mandatory): the way the service is used or called. multiple values are possible, access rights and licenses are assumed to be the same.
 values are specified by vocabulary https://vocabs.sshopencloud.eu/vocabularies/invocation-type/invocationTypeScheme
 
 ```json
-    "invocation_type": [ "RESTfull webservice", "Web Application"
+    "invocation_type": [ "RESTfull webservice", "Web Application", "CLI"
     ]
 ```
+### `API conformance`
+*List* (optional)
+List of API / protocol objects specifying endpoints and FAIRSharing and their interface or protocol specifications.
+```json
+    "API_conformance": [{ 
+      “url”: “http://voparis-tap-maser.obspm.fr/tap”,
+      “dc:conformsTo”: “https://doi.org/10.25504/FAIRsharing.dnE6tF”
+    }]
+```
+
 
 ### `life_cycle_status`
 *List* (optional): indicates the development cycle and/or maturity status of the service. values are by vocabulary
 https://vocabs.sshopencloud.eu/browse/eosc-life-cycle-status/en/. Originally specified in the EOSC Service Profile. Could extend with TRL classifications.
 ````json
-    "life_cycle_status": ["Production", "TRL6"
-]    
+    "life_cycle_status": ["Production", "TRL6"]    
 ````    
 
 ### `website`
@@ -165,27 +162,26 @@ https://vocabs.sshopencloud.eu/browse/eosc-life-cycle-status/en/. Originally spe
 *List* (optional): list of countries and regions where the service is made available eg. for license reasons 
 ````json
     "availability_geographic": ["European Union","United Kingdom"]
-]    
+
 ````    
 
-###processing_language
+### processing_language
 *List* (optional) if applicable the content language the service is able to process, values provided as ISO369-2 language codes
 ```` json
 "processing_language": ["de","nl"]
 ````
 
-
 ### `keywords`
 *List* (optional): list of keywords relevant for service discovery, values may be simple strings or concept URIs
 ````json
-    "keywords": ["https://www.wikidata.org/wiki/Q30642","parsing",]
-]    
+    "keywords": ["https://www.wikidata.org/wiki/Q30642","parsing","https://vocabs.dariah.eu/tadirah/parsing"]
+    
 ```` 
 
 ### `venues`
 *Object*  (optional): A service can be part of a website or online platform that serves as a centralized gateway to a variety of services, information, and resources
 ````json
-    "venue" 
+    "venue": 
         {   
             "local_identifier": "https://cloud.gate.ac.uk",
             "identifiers": {
@@ -197,15 +193,14 @@ https://vocabs.sshopencloud.eu/browse/eosc-life-cycle-status/en/. Originally spe
             "site": "https://cloud.gate.ac.uk",
             "contributions": [ {"by": "University of Sheffield", "role": "operator"}
             ]            
-        }        
-]    
+        }          
 ````
 
 ### `isDeploymentOf`
 *List* (optional) Research Product of type software or github link that the service is based on
 ````json
 "isDeploymentOf": [ "https://github.com/ufal/udpipe" ]
-]
+
 ````
 
 ### `contributions`
