@@ -2,7 +2,29 @@
     "@context": {
         "@version": 1.1,
         "@protected": true,
-        "schema": "http://schema.org/"
-        
+        "schema": "http://schema.org/",
+
+	"datacite": "http://purl.org/spar/datacite/",
+        "dcterms": "http://purl.org/dc/terms/",
+ 	"lcc": "http://id.loc.gov/authorities/classification/",
+        "loc": "http://id.loc.gov/authorities/",
+	"sshopencloudvocabs:" "https://vocabs.sshopencloud.eu/vocabularies/",
+	"sshopencloudvocabs:" "sshopencloudvocabs:eosc-geographical-availability",
+
+	"eosc_service_profile:" "https://github.com/EOSC-PLATFORM/service-profile/tree/4.0/",
+
+        "intended_audience": { "@id": "schema:/Audience", "@type": "@vocab", "@context": {"@base": "sshopencloudvocabs:sshoc-audience"} },
+	"audience_byjurisdiction:" "eosc_service_profile:docs/_vocabularies/DS_JURISDICTION.rst"
+        "disciplines": { "@id": "dcterms:subject", "@type": "@vocab", "@context": {"@base": "http://id.loc.gov/authorities/classification/"} },
+
+	"isaccessible_for_free": { "@id": "schema:isAccessibleForFree", "@type": "xsd:boolean"},
+        "invocation_type": { "@id": "sshopencloudvocabs:invocation-type", "@type": "@vocab", "@context": {"@base": "sshopencloudvocabs:invocation-type"} },
+	"API_conformance": { "@id": "dcterms:conformsTo", "@type": { "uri", "uri" }},
+        "life_cycle_status": { "@id": "sshopencloudvocabs:life_cycle_status", "@type": "@vocab", "@context": {"@base": "sshopencloudvocabs:life_cycle_status"} },
+	"website": "schema:website",
+	"availability_geographic": { "@id": "sshopencloudvocabs:eosc-geographical-availability", "type:" @vocab", @context": {"@base": "sshopencloudvocabs:availability_geographic"}},
+	"processing_resource_language": { "@id": "dcterms:requires", "@vocab", "@context": {"@base": http://www.loc.gov/standards/registry/vocabulary/iso639-2/
+ }
+	"deployment_of": { "@id": "schema:isBasedOn", "@type": "@id"  }
     }
 }
