@@ -1,0 +1,342 @@
+@prefix srv:   <https://w3id.org/skg-if/extension/srv/ontology/> .
+@prefix skg:   <https://w3id.org/skg-if/ontology/> .
+@prefix schema: <https://schema.org/> .
+@prefix dcat:  <http://www.w3.org/ns/dcat#> .
+@prefix bido:  <http://purl.org/spar/bido/> .
+@prefix c4o:   <http://purl.org/spar/c4o/> .
+@prefix cito:  <http://purl.org/spar/cito/> .
+@prefix cv:    <http://rdfs.org/resume-rdf/> .
+@prefix datacite: <http://purl.org/spar/datacite/> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix doco:  <http://purl.org/spar/doco/> .
+@prefix fabio: <http://purl.org/spar/fabio/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix frbr:  <http://purl.org/vocab/frbr/core#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix pro:   <http://purl.org/spar/pro/> .
+@prefix pso:   <http://purl.org/spar/pso/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix scoro: <http://purl.org/spar/scoro/> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix tvc:   <http://www.essepuntato.it/2012/04/tvc/> .
+@prefix vann:  <http://purl.org/vocab/vann/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix lvont: <http://lexvo.org/ontology#> .
+
+############################
+# Annotation properties
+############################
+
+dc:date a owl:AnnotationProperty .
+
+dc:description a owl:AnnotationProperty .
+
+dc:rights a owl:AnnotationProperty .
+
+dc:title a owl:AnnotationProperty .
+
+vann:preferredNamespacePrefix a owl:AnnotationProperty .
+
+vann:preferredNamespaceUri a owl:AnnotationProperty .
+
+############################
+# Reused Classes
+############################
+
+datacite:IdentifierScheme a owl:Class ;
+    rdfs:label "datacite:IdentifierScheme" ;
+    rdfs:isDefinedBy datacite: .
+
+dcterms:Standard a owl:Class ;
+    rdfs:label "dcterms:Standard" ;
+    dc:description """The properties that can be used with this class are:
+
+* skos:prefLabel -[0..N]-> rdfs:Literal""" ;
+    rdfs:isDefinedBy dcterms: .
+
+fabio:SubjectTerm a owl:Class ;
+    rdfs:label "fabio:SubjectTerm (SKG-IF labels: Topic)" ;
+    rdfs:isDefinedBy fabio: .
+
+fabio:Software a owl:Class ;
+    rdfs:label "fabio:Software (SKG-IF labels: software)" ;
+    rdfs:isDefinedBy fabio: .
+
+fabio:Work a owl:Class ;
+    rdfs:label "fabio:Work (SKG-IF labels: any)" ;
+    rdfs:isDefinedBy fabio: .
+
+pro:Role a owl:Class ;
+    rdfs:label "pro:Role" ;
+    rdfs:isDefinedBy pro: .
+
+skos:ConceptScheme a owl:Class ;
+    rdfs:label "skos:ConceptScheme" ;
+    rdfs:isDefinedBy skos: .
+
+schema:SoftwareSourceCode a owl:Class ;
+    rdfs:label "SoftwareSourceCode" ;
+    rdfs:comment "Computer programming source code. Example: Full (compile ready) solutions, code snippet samples, scripts, templates." ;
+    rdfs:subClassOf schema:CreativeWork ;
+    dc:description """The properties that can be used with this class are:
+
+* website -[1..N]-> schema:url
+* dcterms:requires -[1..N]-> schema:url""" ;
+    rdfs:isDefinedBy schema: .
+
+############################
+# Reused Properties
+############################
+
+dcat:endpointURL a owl:ObjectProperty ;
+    rdfs:label "endpoint URL" ;
+    rdfs:domain srv:APIProfile ;
+    rdfs:range xsd:anyURI ;
+    rdfs:isDefinedBy dcat: .
+
+dcterms:conformsTo a owl:ObjectProperty ;
+    rdfs:label "dcterms:conformsTo (SKG-IF labels: conformsTo)" ;
+    dc:description """In SKG-IF, it is used in the following classes (domain):
+
+* srv:Service
+
+In SKG-IF, it is used to link a Service to an APIProfile instance describing endpoint and API specifications.
+* srv:APIProfile""" ;
+    rdfs:domain srv:Service ;
+    rdfs:range srv:APIProfile ;
+    rdfs:isDefinedBy dcterms: .
+
+dcterms:description a owl:DatatypeProperty ;
+    rdfs:label "dcterms:description (SKG-IF labels: description)" ;
+    dc:description """In SKG-IF, it is used in the following classes (domain):
+* srv:Service
+
+In SKG-IF, it is used to link to entities belonging to the following data types (range):
+* xsd:string""" ;
+    rdfs:domain srv:Service ;
+    rdfs:comment "Describe the type of Service and its function." ;
+    rdfs:isDefinedBy dcterms: .
+
+dcterms:relation a owl:ObjectProperty ;
+    rdfs:label "dcterms:relation (SKG-IF labels: relevant_organisations)" ;
+    dc:description """In SKG-IF, it is used in the following classes (domain):
+* fabio:Work
+
+In SKG-IF, it is used to link to entities belonging to the following classes (range):
+* foaf:Organization""" ;
+    rdfs:isDefinedBy dcterms: .
+
+dcterms:requires a owl:ObjectProperty ;
+    rdfs:label "dcterms:requires (SKG-IF labels: requires)" ;
+    dc:description """In SKG-IF, it is used in the following classes (domain):
+* SoftwareSourceCode, requires the presence of a url (landing page, source code rep.)
+""" ;
+    rdfs:isDefinedBy dcterms: .
+
+dcterms:subject a owl:ObjectProperty ;
+    rdfs:label "dcterms:subject (SKG-IF labels: disciplines)" ;
+    dc:description """In SKG-IF, it is used in the following classes (domain):
+* dcat:DataService
+* srv:Service
+
+In SKG-IF, it is used to link to entities belonging to the following classes (range):
+* owl:Thing""" ;
+    rdfs:comment "The disciplines for which a Service, Data source is dedicated. The disciplines must be specified using the Library of Congress Classification codes, available at https://id.loc.gov/authorities/classification (e.g. `PA3000-PA3049` for classical literature). In case a Data source is discipline agnostic, the string `all` should be specified." ;
+    rdfs:isDefinedBy dcterms: .
+
+datacite:github a datacite:IdentifierScheme,
+        owl:NamedIndividual ;
+    rdfs:label "datacite:github (SKG-IF labels: ra_github)" ;
+    rdfs:isDefinedBy datacite: .
+
+foaf:homepage a owl:ObjectProperty ;
+    rdfs:label "foaf:homepage (SKG-IF labels: website)" ;
+    dc:description """In SKG-IF, it is used in the following classes (domain):
+* srv:Service
+
+In SKG-IF, it is used to link to entities belonging to the following classes (range):
+* foaf:Document""" ;
+    rdfs:isDefinedBy foaf: .
+
+skos:inScheme a owl:ObjectProperty ;
+    rdfs:label "skos:inScheme (SKG-IF labels: defined_in)" ;
+    rdfs:isDefinedBy skos: .
+
+skos:prefLabel a owl:DatatypeProperty ;
+    rdfs:label "skos:prefLabel (SKG-IF labels: labels)" ;
+    rdfs:isDefinedBy skos: .
+
+############################
+# SRV Extension Properties
+############################
+
+srv:audienceJurisdiction a owl:DatatypeProperty ;
+    rdfs:label "schema:audience  (SKG-IF labels: audience_byjurisdiction)" ;
+    dc:description """In SKG-IF, it is used in the following classes (domain):
+* srv:Service
+
+In SKG-IF, it is used to link to entities belonging to the following data types (range):
+* xsd:string""" ;
+    rdfs:comment "The type of the audience based on the Jurisdiction vocabulary: (pool of users the data source is intended to serve) of the Data Source (i.e., either Global, Institution, National, or Regional aka multiple countries from https://zenodo.org/records/15516020)." ;
+    rdfs:domain srv:Service ;
+    rdfs:range xsd:string ;
+    rdfs:isDefinedBy srv: .
+
+srv:deploymentOf a owl:ObjectProperty ;
+    rdfs:label "srv:deploymentOf (SKG-IF labels: deployment_of)" ;
+    dc:description """In SKG-IF, it is used in the following classes (domain):
+* srv:Service
+        
+In SKG-IF, it is used to link to entities belonging to the following classes (range):
+* skg:research_product (with type software)
+* schema:SoftwareSourceCode""" ;
+    rdfs:domain srv:Service ;
+    rdfs:range [
+       a owl:Class ;
+       owl:unionOf ( fabio:Software schema:SoftwareSourceCode skg:research_product)
+    ] ;
+    rdfs:comment "A identifier for the software or software research product." ;
+    rdfs:isDefinedBy srv: .
+
+srv:geographicalAvailability a owl:ObjectProperty ;
+    rdfs:subPropertyOf dcterms:scope ;
+    rdfs:label "geographical availability" ;
+    rdfs:range owl:Thing ;   # intentionally unconstrained
+    dc:description """In SKG-IF, it is used in the following classes (domain):
+* srv:Service
+
+In SKG-IF, it is used to indicate geographic & administrative areas from  https://vocabs.sshopencloud.eu/browse/eosc-geographical-availability/en/""" ;
+    rdfs:domain srv:Service ;
+    rdfs:isDefinedBy srv: .
+
+srv:hasTopic a owl:ObjectProperty ;
+    rdfs:label "has topic" ;
+    rdfs:domain srv:Service ;
+    rdfs:range fabio:SubjectTerm ;
+    dc:description "Links a Service to one or more topics defined in SKG-IF." ;
+    rdfs:isDefinedBy srv: .
+
+srv:invocationType a owl:ObjectProperty ;
+    rdfs:label "srv:invocation-type" ;
+    dc:description """In SKG-IF, it is used in the following classes (domain):
+* srv:Service
+
+In SKG-IF, it is used to indicate the method of service invocation using values from the vocabulary (https://vocabs.sshopencloud.eu/vocabularies/invocation-type/)""" ;
+    rdfs:domain srv:Service ;
+    rdfs:range skos:Concept ;
+    rdfs:isDefinedBy srv: .
+
+srv:eoscLifeCycleStatus a owl:ObjectProperty ;
+    rdfs:label "srv:eoscLifeCycleStatus" ;
+    dc:description """In SKG-IF, it is used in the following classes (domain):
+* srv:Service
+
+In SKG-IF, it is used to indicate the maturity of the Service using values from the vocabulary (https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/)""" ;
+    rdfs:domain srv:Service ;
+    rdfs:range skos:Concept ;
+    rdfs:isDefinedBy srv: .
+
+
+srv:intendedAudienceRole a owl:ObjectProperty ;
+    rdfs:label "srv:intendedAudienceRole" ;
+    dc:description """In SKG-IF, it is used in the following classes (domain):
+* srv:Service
+
+In SKG-IF, it is used to indicate audience roles from (https://vocabs.sshopencloud.eu/browse/sshoc-audience/)""" ;
+    rdfs:domain srv:Service ;
+    rdfs:range skos:Concept ;
+    rdfs:isDefinedBy srv: .
+
+srv:relatedResearchProduct a owl:ObjectProperty ;
+    rdfs:label "related research product" ;
+    dc:description """In SKG-IF, it is used in the following classes (domain):
+* srv:Service
+
+In SKG-IF, it is used to link a Service to one or more research products 
+(e.g. software, datasets, workflows, publications) that are conceptually 
+related but not necessarily deployed by the service.""" ;
+    rdfs:comment "Links a Service to one or more related SKG-IF research products (e.g., software, datasets, workflows). Complements `srv:deploymentOf` (software actually deployed)." ;
+    rdfs:domain srv:Service ;
+    rdfs:range skg:research_product ;
+    rdfs:isDefinedBy srv: .
+
+srv:supportedLanguage a owl:ObjectProperty ;
+    rdfs:label "srv:supportedLanguage (SKG-IF labels: supported_language)" ;
+    dc:description """In SKG-IF, it is used in the following classes (domain):
+* srv:Service
+        
+In SKG-IF, it is used to indicate the languages (identifiers)the Service can process (range)""" ;
+    rdfs:domain srv:Service ;
+    rdfs:range lvont:Language ;
+    rdfs:isDefinedBy srv: .
+
+############################
+# SRV Extension Classes
+############################
+
+srv:APIProfile a owl:Class ;
+    rdfs:label "API Profile" ;
+    rdfs:subClassOf dcterms:Standard ;	
+    dc:description """A concrete API profile or specification that pairs service endpoints with (possibly) several API standards. The properties that can be used with this class are:
+
+* dcat:endpointURL -[1]-> xsd:anyURI 
+* schema:url -[1..N]-> xsd:anyURI""" ;
+    # Require that instances have a API endpoint and a spec document
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty dcat:endpointURL ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty schema:url ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:isDefinedBy srv: .
+
+############################
+# Main Service Class
+############################
+
+srv:Service a owl:Class ;
+    rdfs:label "srv:Service" ;
+    rdfs:subClassOf schema:SoftwareApplication ;
+    dc:description """The properties used with this class are:
+* datacite:hasIdentifier -[0..N]-> datacite:Identifier
+* foaf:name -[0..1]-> rdfs:Literal
+* dcterms:description -[0..1]-> xsd:String
+* foaf:homepage -[0..1]-> foaf:Document
+* srv:audienceJurisdiction -[0..N]-> xsd:string
+* srv:intendedAudienceRole -[0..N]-> skos:Concept 
+* srv:invocationType -[0..N]-> skos:Concept 
+* srv:eoscLifeCycleStatus -[0..1]-> skos:Concept 
+* srv:geographicalAvailability - [0..N] -> owl:Thing
+* dcterms:subject -[0..N]-> owl:Thing
+* srv:hasTopic -[0..N]-> fabio:SubjectTerm
+* srv:supportedLanguage -[0..N]-> lvont:Language
+* dcterms:relation -[0..N]-> foaf:Organization
+* dcterms:conformsTo -[0..N]-> srv:APIProfile
+* srv:deploymentOf -[0..N]-> skg:research_product
+* srv:relatedResearchProduct -> [0..N]-> skg:research_product
+* skos:altLabel -[0..N]-> rdfs:Literal""" ;
+    rdfs:isDefinedBy srv: .
+    # rdfs:isDefinedBy schema: .  # intentionally commented out, as in your version
+
+############################
+# Ontology Header
+############################
+
+srv: a owl:Ontology ;
+    rdfs:label "SRV-O: Service extension" ;
+    dc:date "2025-11-23"^^xsd:date ;
+    dc:rights "This work is distributed under a Creative Commons Attribution License (https://creativecommons.org/licenses/by/4.0/legalcode)" ;
+    dc:title "SKG-IF Ontology: Service extension" ;
+    vann:preferredNamespacePrefix "srv" ;
+    vann:preferredNamespaceUri <https://w3id.org/skg-if/extension/srv/ontology/> ;
+    rdfs:comment "This extension of the SKG-IF data model introduces entities necessary to model the Service type of objects that are use to process data in different use-cases, as well as the relationships with well-established entities in the SKG-IF model communication domain. This extension is being developed in the context of the OSTrails project" ;
+    owl:versionIRI <https://w3id.org/skg-if/extension/srv/ontology/1.0.0/> ;
+    owl:versionInfo "1.0.0" .
+
+
+

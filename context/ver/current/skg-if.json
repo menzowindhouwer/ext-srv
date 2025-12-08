@@ -1,33 +1,119 @@
 {
-    "@context": {
-        "@version": 1.1,
-        "@protected": true,
-        "schema": "http://schema.org/",
+  "@context": {
+    "@version": 1.1,
+    "@protected": true,
 
-	"datacite": "http://purl.org/spar/datacite/",
-        "dcterms": "http://purl.org/dc/terms/",
- 	"lcc": "http://id.loc.gov/authorities/classification/",
-        "loc": "http://id.loc.gov/authorities/",
-	"eoscgeographicalavailability": "https://vocabs.sshopencloud.eu/vocabularies/eosc-geographical-availability/",
-	"eosclifecyclestatus": "https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/",
+    /** -------------------------
+     *  Prefixes
+     *  ------------------------- */
+    "schema": "http://schema.org/",
+    "srv": "https://w3id.org/skg-if/extension/srv/ontology/",
+    "skg": "https://w3id.org/skg-if/ontology/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "datacite": "http://purl.org/spar/datacite/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "prism": "http://prismstandard.org/namespaces/basic/2.0/",
+    "lvont": "http://lexvo.org/ontology#",
+    "loc": "http://id.loc.gov/authorities/",
+    "sshopencloudvocabs": "https://vocabs.sshopencloud.eu/vocabularies/",
 
-	"sshocaudience": "https://vocabs.sshopencloud.eu/vocabularies/sshoc-audience/",
-	"eosc_service_profile": "https://github.com/EOSC-PLATFORM/service-profile/tree/4.0/",
 
-        "intended_audience": { "@id": "schema:/Audience", "@type": "@vocab", "@context": {"@base": "sshoc-audience"} },
-	"audience_byjurisdiction": "eosc_service_profile:docs/_vocabularies/DS_JURISDICTION.rst",
-        "disciplines": { "@id": "dcterms:subject", "@type": "@vocab", "@context": {"@base": "http://id.loc.gov/authorities/classification/"} },
+    /** -------------------------
+     *  SKG-IF core-style metadata fields
+     *  ------------------------- */
+    "local_identifier": "@id",
 
-	"isaccessible_for_free": { "@id": "schema:isAccessibleForFree", "@type": "xsd:boolean"},
-        "invocation_type": { "@id": "sshopencloudvocabs:invocation-type", "@type": "@vocab", "@context": {"@base": "sshopencloudvocabs:invocation-type"} },
-	"API_conformance": { "@id": "dcterms:conformsTo", "@type": "@vocab"},
-        "apiuri": { "@id": "schema:URI"},
-        "standarduri": { "@id": "schema:URI"},
+    "identifiers": { "@id": "datacite:hasIdentifier", "@type": "@vocab" },
 
-        "life_cycle_status": { "@id": "eosclifecyclestatus:eoscLifeCycleStatusScheme", "@type": "@vocab", "@context": {"@base": "eosclifecyclestatus"} },
-	"website": "schema:website",
-	"availability_geographic": { "@id": "eoscgeographicalavailability:eoscGeographicalAvailabilityScheme", "@type": "@vocab", "@context": {"@base": "eoscgeographicalavailability"}},
-	"processing_resource_language": { "@id": "dcterms:requires", "@type": "@vocab", "@context": {"@base": "http://id.loc.gov/vocabulary/iso639-2/" }},
-	"deployment_of": { "@id": "schema:SoftwareSourceCode", "@type": "@id"  }
-    }
+    "description": { "@id": "dcterms:description", "@type": "xsd:string" },
+
+    "keywords": "prism:keyword",
+
+
+    /** -------------------------
+     *  External controlled vocabularies
+     *  ------------------------- */
+    "eoscgeographicalavailability": "https://vocabs.sshopencloud.eu/vocabularies/eosc-geographical-availability/",
+
+    "eosclifecyclestatus": "https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/",
+
+    "sshocaudience": "https://vocabs.sshopencloud.eu/vocabularies/sshoc-audience/",
+
+    "eosc_service_profile": "https://github.com/EOSC-PLATFORM/service-profile/tree/4.0/",
+
+
+    /** -------------------------
+     *  Audience-related properties
+     *  ------------------------- */
+    "audience_byrole": { "@id": "srv:intendedAudienceRole", "@type": "@vocab", "@context": { "@base": "sshoc-audience" } },
+
+    "audience_byjurisdiction": { "@id": "srv:audienceJurisdiction", "@type": "xsd:string" },
+
+    /** -------------------------
+     *  Disciplines (SKG-IF style)
+     *  ------------------------- */
+    "disciplines": { "@id": "dcterms:subject", "@type": "@vocab", "@context": { "@base": "http://id.loc.gov/authorities/classification/" } },
+
+    "all": "loc:classification",
+
+
+    /** -------------------------
+     *  Boolean + lifecycle + invocation fields
+     *  ------------------------- */
+    "isaccessible_for_free": { "@id": "schema:isAccessibleForFree", "@type": "xsd:boolean" },
+
+    "invocation_type": { "@id": "srv:invocationType", "@type": "@vocab", "@context": { "@base": "sshopencloudvocabs:invocation-type" } },
+
+    "life_cycle_status": { "@id": "srv:eoscLifeCycleStatus", "@type": "@vocab", "@context": { "@base": "sshopencloudvocabs:eosc-life-cycle-status/" } },
+
+
+    /** -------------------------
+     *  API Profile (dcterms:conformsTo)
+     *  ------------------------- */
+    "api_profile": { "@id": "dcterms:conformsTo", "@type": "@id" },
+
+    /** APIProfile internal fields */
+    "api_endpoint": { "@id": "dcat:endpointURL", "@type": "@id" },
+    "api_specification_uri": { "@id": "schema:url", "@type": "@id" },
+
+
+    /** -------------------------
+     *  Website and availability
+     *  ------------------------- */
+    "website": { "@id": "foaf:homepage", "@type": "@vocab" },
+
+    "availability_geographic": { "@id": "srv:geographicalAvailability", "@type": "@vocab", "@context": { "@base": "sshopencloudvocabs:eosc-geographical-availability" } },
+
+
+    /** -------------------------
+     *  Languages (lexvo ISO-639-3)
+     *  ------------------------- */
+    "supported_language": { "@id": "srv:supportedLanguage", "@type": "@vocab", "@context": { "@base": "http://lexvo.org/id/iso639-3/" } },
+
+
+    /** -------------------------
+     *  Research product links
+     *  ------------------------- */
+    "deployment_of": { "@id": "srv:deploymentOf", "@type": "@id" },
+
+    "related_research_product": { "@id": "srv:relatedResearchProduct", "@type": "@id" },
+
+
+    /** -------------------------
+     *  Topics, organisations
+     *  ------------------------- */
+    "has_topic": { "@id": "srv:hasTopic", "@type": "@id" },
+
+    "relevant_organisations": { "@id": "dcterms:relation", "@type": "@id" },
+
+    /** -------------------------
+     *  Labels and names
+     *  ------------------------- */
+    "alt_label": { "@id": "skos:altLabel", "@type": "xsd:string" },
+
+    "name": { "@id": "foaf:name", "@type": "xsd:string" }
+  }
 }
+
