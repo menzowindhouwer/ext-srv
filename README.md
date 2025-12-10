@@ -1,5 +1,7 @@
 # SKG-IF Service extension
 
+This repository contains everything related to the Server SKG-IFextension.
+
 The extension proposal and work comes from the OSTrails project
 
 Brief motivation:

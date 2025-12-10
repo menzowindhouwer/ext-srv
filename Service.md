@@ -67,20 +67,23 @@ Needed for parsing purposes; fixed to `service`.
     "entity_type": "service"
 ```
 
-### `names`
+### `name`
 *Object* (optional): The names of a [Software service] (multiple for multilingualism). 
 
 The object is a dictionary, the keys represent language codes following [ISO 639-1]; the special key `none` is reserved whenever the information about the language is not available or cannot be shared.
 
 ```json
-    "names": {
-        "en": ["UDPipe", "UDPipe 2", "UDPipe 2.0"],
+    "name": {
+        "en": "UDPipe",
         "zh-cn": "UDPipe 工具"        
+    },
+    "alt_label": {
+        "en": ["UDPipe 2", "UDPipe 2.0"]
     }
 ```
 
-### `descriptions`
-*Object* (optional): The description of a [Software service] (multiple for multilingualism).
+### `description`
+*Object* (optional): The description of a [Service] (multiple for multilingualism).
 
 The object is a dictionary, the keys represent language codes following [ISO 639-1]; the special key `none` is reserved whenever the informtion about the language is not available or cannot be shared.
 
@@ -92,120 +95,145 @@ The object is a dictionary, the keys represent language codes following [ISO 639
 ```
 
 
-### `indended_audience`
+### `audience_byrole`
 *Object* (optional): the audience(s) that the service is intended to be used by
 This can  both express desire and/or design of the service operators. Values are mandatory taken from 
-the https://vocabs.sshopencloud.eu/browse/sshoc-audience/en/page/audienceScheme 
+the https://vocabs.sshopencloud.eu/vocabularies/sshoc-audience/audienceScheme 
 ```json
-    "intended_audience": ["Institution", "Student"
-    ]
+    "@context": {
+        sshocaudience: "https://vocabs.sshopencloud.eu/vocabularies/sshoc-audience/"
+    },
+    "intended_audience": ["sshocaudience:public", "sshocaudience:student" ]
 ```
 
-### `audiencebyjurisdiction`
+### `audience_byjurisdiction`
 *Object* (optional): the jurisdiction that is given by the service operator's legal status limits
-the audience. value take from https://github.com/EOSC-PLATFORM/service-profile/blob/4.0/docs/_vocabularies/DS_JURISDICTION.rst  
+the audience. value take from either Global, Institution, National, or Regional aka multiple countries, from https://zenodo.org/records/15516020)
 ```json
-    "jurisdiction": ["ds_jurisdiction_research_infrastructure", "ds_jurisdiction-regional"
-    ]
+    "jurisdiction": ["ds_jurisdiction_research_infrastructure", "ds_jurisdiction-regional" ]
 ```
 
 ### `disciplines`
 *List* (optional):  The disciplines for which a [Software Service] is dedicated. 
 The disciplines must be specified using the Library of Congress Classification codes, 
 available at https://id.loc.gov/authorities/classification (e.g. PA3000-PA3049 for classical literature). 
-In case a [Service] is discipline agnostic, the string all should be specified.
+In case a [Service] is discipline agnostic, the string "all" should be specified.
 ```json
+    "@context": {
+        loc: "https://id.loc.gov/authorities/classification/"
+    }
     "discipline": [
-        "QC790.95-QC791.8"
+        "loc:QC790.95-QC791.8"
     ]
 ```
 
-### `accessible_for_free`
-*Boolean* (recommended)
+### `isaccessible_for free`
+*String* (optional): A property to signal that the Service is accessible for free.
 
+``` json
+
+
+    "is_accessible_for_free": true
+```
+
+### `entity_type`
+*String* (mandatory) indicating what type of entity is being serialised.
+
+Needed for parsing purposes; fixed to `service`.
+
+```json
+   "entity_type": "service"
+```
 
 ### `invocation_type`
-*List* (mandatory): the way the service is used or called. multiple values are possible, access rights and licenses are assumed to be the same.
+*List* (mandatory): the way the service is used or called. multiple values are possible, access rights and licenses are assued to be the same.
 values are specified by vocabulary https://vocabs.sshopencloud.eu/vocabularies/invocation-type/invocationTypeScheme
 
 ```json
-    "invocation_type": [ "RESTfull webservice", "Web Application", "CLI"
-    ]
+    "@context": {
+        sshocinvt: "https://vocabs.sshopencloud.eu/vocabularies/invocation-type/"
+    },
+    "invocation_type": [ "sshocinvt:restfullWebservice", "sshocinvt:webApplication" ]
 ```
-### `API conformance`
-*List* (optional)
-List of API / protocol objects specifying endpoints and FAIRSharing and their interface or protocol specifications.
-```json
-    "API_conformance": [{ 
-      “url”: “http://voparis-tap-maser.obspm.fr/tap”,
-      “dc:conformsTo”: “https://doi.org/10.25504/FAIRsharing.dnE6tF”
-    }]
-```
-
 
 ### `life_cycle_status`
 *List* (optional): indicates the development cycle and/or maturity status of the service. values are by vocabulary
-https://vocabs.sshopencloud.eu/browse/eosc-life-cycle-status/en/. Originally specified in the EOSC Service Profile. Could extend with TRL classifications.
-````json
-    "life_cycle_status": ["Production", "TRL6"]    
-````    
+https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/ Originally specified in the EOSC Service Profile. Could extend with TRL classifications.
+```json
+     "@context": {
+        elcs: "https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/"
+     }
+    "life_cycle_status": ["elcs:life_cycle_status_production", "elcs:TRL6" ]    
+```    
 
 ### `website`
 *String* (mandatory): landingpage for the service. preferably one maintained by the service operator 
-
 
 ```json
     "website": "https://ufal.mff.cuni.cz/udpipe/2"
 ```
 
 ### `availablity_geographic`
-*List* (optional): list of countries and regions where the service is made available eg. for license reasons 
-````json
-    "availability_geographic": ["European Union","United Kingdom"]
+*List* (optional): list of countries and regions where the service is made available eg. for license reasons. 
 
-````    
+```json
+     "@context": {
+        eoscgeoavail: "https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/"
+     },
+    "availability_geographic": ["eoscgeoavail:eu","eoscgeoavail:uk"]
+```    
 
-### processing_language
-*List* (optional) if applicable the content language the service is able to process, values provided as ISO369-2 language codes
-```` json
-"processing_language": ["de","nl"]
-````
+### `supported_language`
+
+*List* (optional) if applicable the language(s) the service is able to process, values provided as ISO369-2 language codes
+
+``` json
+    "@context": {
+       lexvo: "http://lexvo.org/id/"
+     },
+     "supported_language": ["lexvo:iso639-3/de","lexvo:iso639-3/nl"]
+```
+
+### `relevant_organisations`
+*List* (optional): Relevant [Organisation] identifiers associated with a [Service].
+
+```json
+    "relevant_organisations": [
+        "https://example.org/organisations/LINDAT",
+        "https://example.org/organisations/CLARIAH-CZ"
+    ]
+```
+foaf:Organization items defined separately elsewhere 
+
+```json
+    {
+      "@id": "https://lindat.mff.cuni.cz",
+      "@type": "foaf:Organization",
+      "name": "LINDAT/CLARIAH-CZ Research Infrastructure",
+      "description": "Hosts the production service instance and provides long-term repository, compute resources and user support.",
+      "url": "https://lindat.mff.cuni.cz"
+    }
+
+``` 
 
 ### `keywords`
 *List* (optional): list of keywords relevant for service discovery, values may be simple strings or concept URIs
-````json
-    "keywords": ["https://www.wikidata.org/wiki/Q30642","parsing","https://vocabs.dariah.eu/tadirah/parsing"]
-    
-```` 
 
-### `venues`
-*Object*  (optional): A service can be part of a website or online platform that serves as a centralized gateway to a variety of services, information, and resources
-````json
-    "venue": 
-        {   
-            "local_identifier": "https://cloud.gate.ac.uk",
-            "identifiers": {
-                "scheme": "URI",
-                "value": "https://cloud.gate.ac.uk"
-            },
-            "name": "Gate Cloud",          
-            "type": "portal",         
-            "site": "https://cloud.gate.ac.uk",
-            "contributions": [ {"by": "University of Sheffield", "role": "operator"}
-            ]            
-        }          
-````
+```json
+    "keywords": ["https://www.wikidata.org/wiki/Q30642","parsing",]
+``` 
 
-### `isDeploymentOf`
+### `deploymentOf`
 *List* (optional) Research Product of type software or github link that the service is based on
-````json
-"isDeploymentOf": [ "https://github.com/ufal/udpipe" ]
 
-````
+```json
+    "isDeploymentOf": [ "https://github.com/ufal/udpipe" ]
+```
 
 ### `contributions`
 *List* of contributions (optional): 
-````json
+
+```json
     "contributions": [ 
            {
                     "by": "University of Sheffield",
@@ -216,7 +244,7 @@ https://vocabs.sshopencloud.eu/browse/eosc-life-cycle-status/en/. Originally spe
                     "role": "funder"
                 }  
 ]    
-````
+```
 
 
 ----
