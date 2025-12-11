@@ -121,6 +121,7 @@ In SKG-IF, it is used to link to entities belonging to the following data types 
 dcterms:relation a owl:ObjectProperty ;
     rdfs:label "dcterms:relation (SKG-IF labels: relevant_organisations)" ;
     dc:description """In SKG-IF, it is used in the following classes (domain):
+* fabio:Service
 * fabio:Work
 
 In SKG-IF, it is used to link to entities belonging to the following classes (range):
@@ -178,7 +179,7 @@ srv:audienceJurisdiction a owl:DatatypeProperty ;
 
 In SKG-IF, it is used to link to entities belonging to the following data types (range):
 * xsd:string""" ;
-    rdfs:comment "The type of the audience based on the Jurisdiction vocabulary: (pool of users the data source is intended to serve) of the Data Source (i.e., either Global, Institution, National, or Regional aka multiple countries from https://zenodo.org/records/15516020)." ;
+    rdfs:comment "The type of the audience based on the Jurisdiction vocabulary: pool of users the Service is intended to serve (i.e., either Global, Institution, National, or Regional aka multiple countries, from https://zenodo.org/records/15516020)." ;
     rdfs:domain srv:Service ;
     rdfs:range xsd:string ;
     rdfs:isDefinedBy srv: .
@@ -215,6 +216,10 @@ srv:hasTopic a owl:ObjectProperty ;
     rdfs:domain srv:Service ;
     rdfs:range fabio:SubjectTerm ;
     dc:description "Links a Service to one or more topics defined in SKG-IF." ;
+    dc:description """In SKG-IF, it is used in the following classes (domain):
+* srv:Service
+In SKG-IF, it is used to link Service to relevant (range):
+* Topics""" ;
     rdfs:isDefinedBy srv: .
 
 srv:invocationType a owl:ObjectProperty ;
@@ -243,7 +248,7 @@ srv:intendedAudienceRole a owl:ObjectProperty ;
     dc:description """In SKG-IF, it is used in the following classes (domain):
 * srv:Service
 
-In SKG-IF, it is used to indicate audience roles from (https://vocabs.sshopencloud.eu/browse/sshoc-audience/)""" ;
+In SKG-IF, it is used to indicate audience roles from (https://vocabs.sshopencloud.eu/vocabularies/sshoc-audience/audienceScheme)""" ;
     rdfs:domain srv:Service ;
     rdfs:range skos:Concept ;
     rdfs:isDefinedBy srv: .
@@ -266,7 +271,8 @@ srv:supportedLanguage a owl:ObjectProperty ;
     dc:description """In SKG-IF, it is used in the following classes (domain):
 * srv:Service
         
-In SKG-IF, it is used to indicate the languages (identifiers)the Service can process (range)""" ;
+In SKG-IF, it is used to indicate the languages (identifiers)the Service can process (range):
+* lvont:Language""" ;
     rdfs:domain srv:Service ;
     rdfs:range lvont:Language ;
     rdfs:isDefinedBy srv: .
@@ -295,6 +301,24 @@ srv:APIProfile a owl:Class ;
     ] ;
     rdfs:isDefinedBy srv: .
 
+srv:FacilityPortal a owl:class ;
+    rdfs:label "Facility Portal"
+    rdfs:subClassOf schema:WebSite, dcat:Catalog ;
+    rdfs:comment "organizational facility that operates services and provides portal access to them" ;
+    rdfs:subClassOf schema:WebSite , foaf:Organization, dcat:Catalog ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty schema:provider ;
+        owl:allValuesFrom foaf:Organization
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty schema:provider ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+    
+
 ############################
 # Main Service Class
 ############################
@@ -304,8 +328,7 @@ srv:Service a owl:Class ;
     rdfs:subClassOf schema:SoftwareApplication ;
     dc:description """The properties used with this class are:
 * datacite:hasIdentifier -[0..N]-> datacite:Identifier
-* foaf:name -[0..1]-> rdfs:Literal
-* dcterms:description -[0..1]-> xsd:String
+* dcterms:description -[0..1]-> rdfs:Litteral
 * foaf:homepage -[0..1]-> foaf:Document
 * srv:audienceJurisdiction -[0..N]-> xsd:string
 * srv:intendedAudienceRole -[0..N]-> skos:Concept 
@@ -317,11 +340,12 @@ srv:Service a owl:Class ;
 * srv:supportedLanguage -[0..N]-> lvont:Language
 * dcterms:relation -[0..N]-> foaf:Organization
 * dcterms:conformsTo -[0..N]-> srv:APIProfile
+* schema:provider -[0..1]-> srv:FacilityPortal
 * srv:deploymentOf -[0..N]-> skg:research_product
 * srv:relatedResearchProduct -> [0..N]-> skg:research_product
+* skos:prefLabel -[1..N]-> rdfs:Litteral
 * skos:altLabel -[0..N]-> rdfs:Literal""" ;
     rdfs:isDefinedBy srv: .
-    # rdfs:isDefinedBy schema: .  # intentionally commented out, as in your version
 
 ############################
 # Ontology Header
