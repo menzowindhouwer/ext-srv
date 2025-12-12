@@ -195,12 +195,14 @@ https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/ Originally s
 ```
 
 ### `relevant_organisations`
-*List* (optional): Relevant [Organisation] identifiers associated with a [Service].
+*List* (optional):  [Organisation] identifiers associated with and relevant for a [Service].
+identifiers can be of local or global identifier system type eg. ror, uri 
 
 ```json
     "relevant_organisations": [
-        "https://example.org/organisations/LINDAT",
-        "https://example.org/organisations/CLARIAH-CZ"
+        "https://lindat.mff.cuni.cz", 
+        "https://ror.org/03wp25384"
+
     ]
 ```
 foaf:Organization items defined separately elsewhere 
@@ -223,15 +225,19 @@ foaf:Organization items defined separately elsewhere
     "keywords": ["https://www.wikidata.org/wiki/Q30642","parsing",]
 ``` 
 
-### `deploymentOf`
-*List* (optional) Research Product of type software or github link that the service is based on
+### `deployment_of`
+*List* (optional) Research Product of type software, software class or sourcecode rep  link that the service is based on
 
 ```json
-    "isDeploymentOf": [ "https://github.com/ufal/udpipe" ]
+    "deployment_of": [
+        { "@id": "https://github.com/ufal/udpipe", "@type": "schema:SoftwareSourceCode"},
+        { "@id": "http://example.org/research_product/RP_101", "@type": "skg:research_product"}
+    ]
+    
 ```
 
 ### `contributions`
-*List* of contributions (optional): 
+*List* [Agents] that contributed to a [Service] (optional): 
 
 ```json
     "contributions": [ 
