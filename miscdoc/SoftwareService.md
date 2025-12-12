@@ -1,4 +1,3 @@
-# SKG-IF Software  Service Extension
 ---
 title: Software Service 
 parent: Interoperability framework
@@ -6,7 +5,7 @@ ancestor: Service
 layout: default
 nav_order: 2
 ---
-# SKG-IF Software  Software Service Extension
+# SKG-IF Software Service Extension
 
 A software service is a type of software application or component that provides specific 
 functionality or operations over a network, often via the internet, and is typically accessed 

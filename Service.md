@@ -1,4 +1,3 @@
-# SKG-IF Service Extension
 ---
 title: Service 
 parent: Interoperability framework
