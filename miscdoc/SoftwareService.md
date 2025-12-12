@@ -2,7 +2,7 @@
 ---
 title: Software Service 
 parent: Interoperability framework
-ancestor: RA-SKG
+ancestor: Service
 layout: default
 nav_order: 2
 ---

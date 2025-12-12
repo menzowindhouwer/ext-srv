@@ -2,7 +2,7 @@
 ---
 title: Service 
 parent: Interoperability framework
-ancestor: SKG-IF
+ancestor: Service
 layout: default
 nav_order: 2
 ---

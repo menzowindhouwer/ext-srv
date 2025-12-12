@@ -61,7 +61,7 @@ A few **simple, yet optional, recommendations** are provided for guide the devel
 - To improve readability, use labels in the ontology description for entities and properties "surfacing" to the actual [extended Interoperability Framework](../extended-interoperability-framework/), i.e., as terms in the [JSON-LD context](../context/). Here below, a triple for a label used for this extension is reported.
 
     ```
-    <http://schema.org/comment> rdfs:label "schema:comment (SKG-IF labels: tmpl_comments)" .
+    <http://schema.org/comment> rdfs:label "schema:comment (SKG-IF labels: srv_comments)" .
     ```
 
 -  SKG-IF provides a [SHACL extractor](https://github.com/skg-if/shacl-extractor) that simplifies and streamlines the creation from scratch of the required [SHACL file](./shacl) starting from the ontology description produced in this phase. To this end, the following template is advised in order to parse automatically the descriptions.
