@@ -1,5 +1,5 @@
 ---
-title: Service 
+title: Generic service 
 parent: Interoperability framework
 ancestor: Service
 layout: default

@@ -1,5 +1,5 @@
 ---
-title: Software Service 
+title: Software service 
 parent: Interoperability framework
 ancestor: Service
 layout: default
