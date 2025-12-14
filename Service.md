@@ -5,6 +5,9 @@ ancestor: Service
 layout: default
 nav_order: 2
 ---
+
+*Please note that the Service extension is still work in progress*
+
 # SKG-IF Service Extension
 
 A Service is a type of software application or component that provides specific 
@@ -100,7 +103,7 @@ This can  both express desire and/or design of the service operators. Values are
 the https://vocabs.sshopencloud.eu/vocabularies/sshoc-audience/audienceScheme 
 ```json
     "@context": {
-        sshocaudience: "https://vocabs.sshopencloud.eu/vocabularies/sshoc-audience/"
+        "sshocaudience": "https://vocabs.sshopencloud.eu/vocabularies/sshoc-audience/"
     },
     "intended_audience": ["sshocaudience:public", "sshocaudience:student" ]
 ```
@@ -119,7 +122,7 @@ available at https://id.loc.gov/authorities/classification (e.g. PA3000-PA3049 f
 In case a [Service] is discipline agnostic, the string "all" should be specified.
 ```json
     "@context": {
-        loc: "https://id.loc.gov/authorities/classification/"
+        "loc": "https://id.loc.gov/authorities/classification/"
     }
     "discipline": [
         "loc:QC790.95-QC791.8"
@@ -150,7 +153,7 @@ values are specified by vocabulary https://vocabs.sshopencloud.eu/vocabularies/i
 
 ```json
     "@context": {
-        sshocinvt: "https://vocabs.sshopencloud.eu/vocabularies/invocation-type/"
+        "sshocinvt": "https://vocabs.sshopencloud.eu/vocabularies/invocation-type/"
     },
     "invocation_type": [ "sshocinvt:restfullWebservice", "sshocinvt:webApplication" ]
 ```
@@ -160,7 +163,7 @@ values are specified by vocabulary https://vocabs.sshopencloud.eu/vocabularies/i
 https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/ Originally specified in the EOSC Service Profile. Could extend with TRL classifications.
 ```json
      "@context": {
-        elcs: "https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/"
+        "elcs": "https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/"
      }
     "life_cycle_status": ["elcs:life_cycle_status_production", "elcs:TRL6" ]    
 ```    
@@ -177,7 +180,7 @@ https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/ Originally s
 
 ```json
      "@context": {
-        eoscgeoavail: "https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/"
+        "eoscgeoavail": "https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/"
      },
     "availability_geographic": ["eoscgeoavail:eu","eoscgeoavail:uk"]
 ```    
@@ -188,7 +191,7 @@ https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/ Originally s
 
 ``` json
     "@context": {
-       lexvo: "http://lexvo.org/id/"
+       "lexvo": "http://lexvo.org/id/"
      },
      "supported_language": ["lexvo:iso639-3/de","lexvo:iso639-3/nl"]
 ```
