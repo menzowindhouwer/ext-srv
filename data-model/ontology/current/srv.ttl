@@ -76,14 +76,16 @@ skos:ConceptScheme a owl:Class ;
     rdfs:isDefinedBy skos: .
 
 schema:SoftwareSourceCode a owl:Class ;
-    rdfs:label "SoftwareSourceCode" ;
-    rdfs:comment "Computer programming source code. Example: Full (compile ready) solutions, code snippet samples, scripts, templates." ;
+    rdfs:label "schema:SoftwareSourceCode" ;
     rdfs:subClassOf schema:CreativeWork ;
-    dc:description """The properties that can be used with this class are:
+    dc:description """
+The properties that can be used with this class are:
 
-* website -[1..N]-> schema:url
-* dcterms:requires -[1..N]-> schema:url""" ;
+* foaf:homepage -[0..N]-> foaf:Document
+* schema:codeRepository -[1..N]-> schema:url """ ;
+    rdfs:comment """Computer programming source code, including full (compile-ready) solutions, code snippet samples, templates, scripts, and other software artefacts.  """ ; 
     rdfs:isDefinedBy schema: .
+
 
 ############################
 # Reused Properties
@@ -121,7 +123,7 @@ In SKG-IF, it is used to link to entities belonging to the following data types 
 dcterms:relation a owl:ObjectProperty ;
     rdfs:label "dcterms:relation (SKG-IF labels: relevant_organisations)" ;
     dc:description """In SKG-IF, it is used in the following classes (domain):
-* fabio:Service
+* srv:Service
 * fabio:Work
 
 In SKG-IF, it is used to link to entities belonging to the following classes (range):
@@ -190,7 +192,8 @@ srv:deploymentOf a owl:ObjectProperty ;
 * srv:Service
         
 In SKG-IF, it is used to link to entities belonging to the following classes (range):
-* skg:research_product (with type software)
+* skg:research_product (type software)
+* fabio:Software
 * schema:SoftwareSourceCode""" ;
     rdfs:domain srv:Service ;
     rdfs:range [
@@ -277,17 +280,22 @@ In SKG-IF, it is used to indicate the languages (identifiers)the Service can pro
     rdfs:range lvont:Language ;
     rdfs:isDefinedBy srv: .
 
+schema:provider a owl:ObjectProperty ;
+    rdfs:domain srv:Service ;
+    rdfs:range srv:FacilityPortal .
+
+
 ############################
 # SRV Extension Classes
 ############################
 
 srv:APIProfile a owl:Class ;
     rdfs:label "API Profile" ;
-    rdfs:subClassOf dcterms:Standard ;	
     dc:description """A concrete API profile or specification that pairs service endpoints with (possibly) several API standards. The properties that can be used with this class are:
+* dcat:endpointURL -[1]-> xsd:anyURI
+* schema:url -[1..N]-> xsd:anyURI """ ;
 
-* dcat:endpointURL -[1]-> xsd:anyURI 
-* schema:url -[1..N]-> xsd:anyURI""" ;
+    rdfs:subClassOf dcterms:Standard ;	
     # Require that instances have a API endpoint and a spec document
     rdfs:subClassOf [
         a owl:Restriction ;
@@ -301,11 +309,16 @@ srv:APIProfile a owl:Class ;
     ] ;
     rdfs:isDefinedBy srv: .
 
-srv:FacilityPortal a owl:class ;
-    rdfs:label "Facility Portal"
-    rdfs:subClassOf schema:WebSite, dcat:Catalog ;
+srv:FacilityPortal a owl:Class ;
+    rdfs:label "Facility Portal" ;
+    dc:description """The properties that can be used with this class are:
+* schema:provider -[1]-> foaf:Organization
+* skos:prefLabel -[1..N]-> rdfs:Literal
+* skos:altLabel -[0..N]-> rdfs:Literal
+""" ;
     rdfs:comment "organizational facility that operates services and provides portal access to them" ;
     rdfs:subClassOf schema:WebSite , foaf:Organization, dcat:Catalog ;
+    # Require that instances have a API endpoint and a spec document
     rdfs:subClassOf [
         a owl:Restriction ;
         owl:onProperty schema:provider ;
@@ -326,24 +339,26 @@ srv:FacilityPortal a owl:class ;
 srv:Service a owl:Class ;
     rdfs:label "srv:Service" ;
     rdfs:subClassOf schema:SoftwareApplication ;
-    dc:description """The properties used with this class are:
+    dc:description """The properties that can be used with this class are:
 * datacite:hasIdentifier -[0..N]-> datacite:Identifier
-* dcterms:description -[0..1]-> rdfs:Litteral
+* dcterms:description -[0..1]-> rdfs:Literal
 * foaf:homepage -[0..1]-> foaf:Document
 * srv:audienceJurisdiction -[0..N]-> xsd:string
 * srv:intendedAudienceRole -[0..N]-> skos:Concept 
 * srv:invocationType -[0..N]-> skos:Concept 
 * srv:eoscLifeCycleStatus -[0..1]-> skos:Concept 
-* srv:geographicalAvailability - [0..N] -> owl:Thing
+* srv:geographicalAvailability -[0..N]-> owl:Thing
 * dcterms:subject -[0..N]-> owl:Thing
 * srv:hasTopic -[0..N]-> fabio:SubjectTerm
 * srv:supportedLanguage -[0..N]-> lvont:Language
 * dcterms:relation -[0..N]-> foaf:Organization
 * dcterms:conformsTo -[0..N]-> srv:APIProfile
 * schema:provider -[0..1]-> srv:FacilityPortal
+* srv:deploymentOf -[0..N]-> fabio:Software
+* srv:deploymentOf -[0..N]-> schema:SoftwareSourceCode
 * srv:deploymentOf -[0..N]-> skg:research_product
-* srv:relatedResearchProduct -> [0..N]-> skg:research_product
-* skos:prefLabel -[1..N]-> rdfs:Litteral
+* srv:relatedResearchProduct -[0..N]-> skg:research_product
+* skos:prefLabel -[1..N]-> rdfs:Literal
 * skos:altLabel -[0..N]-> rdfs:Literal""" ;
     rdfs:isDefinedBy srv: .
 
@@ -359,8 +374,6 @@ srv: a owl:Ontology ;
     vann:preferredNamespacePrefix "srv" ;
     vann:preferredNamespaceUri <https://w3id.org/skg-if/extension/srv/ontology/> ;
     rdfs:comment "This extension of the SKG-IF data model introduces entities necessary to model the Service type of objects that are use to process data in different use-cases, as well as the relationships with well-established entities in the SKG-IF model communication domain. This extension is being developed in the context of the OSTrails project" ;
-    owl:versionIRI <https://w3id.org/skg-if/extension/srv/ontology/1.0.0/> ;
-    owl:versionInfo "1.0.0" .
-
-
+    owl:versionIRI <https://w3id.org/skg-if/extension/srv/ontology/service/7.0.0/> ;
+    owl:versionInfo "7.0.0" .
 
