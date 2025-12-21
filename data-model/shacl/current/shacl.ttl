@@ -8,12 +8,12 @@
 @prefix schema: <https://schema.org/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix skg: <https://w3id.org/skg-if/ontology/> .
-@prefix skg_sh_current: <https://w3id.org/skg-if/shapes/current/> .
+@prefix skg_sh_service: <https://w3id.org/skg-if/shapes/service/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix srv: <https://w3id.org/skg-if/extension/srv/ontology/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-skg_sh_current:APIProfileShape a sh:NodeShape ;
+skg_sh_service:APIProfileShape a sh:NodeShape ;
     sh:property [ sh:datatype xsd:anyURI ;
             sh:minCount 1 ;
             sh:path schema:url ],
@@ -21,7 +21,7 @@ skg_sh_current:APIProfileShape a sh:NodeShape ;
             sh:minCount 1 ;
             sh:path dcat:endpointURL ] .
 
-skg_sh_current:FacilityPortalShape a sh:NodeShape ;
+skg_sh_service:FacilityPortalShape a sh:NodeShape ;
     sh:property [ sh:class foaf:Organization ;
             sh:minCount 1 ;
             sh:nodeKind sh:BlankNodeOrIRI ;
@@ -33,7 +33,7 @@ skg_sh_current:FacilityPortalShape a sh:NodeShape ;
             sh:nodeKind sh:Literal ;
             sh:path skos:altLabel ] .
 
-skg_sh_current:ServiceShape a sh:NodeShape ;
+skg_sh_service:ServiceShape a sh:NodeShape ;
     sh:property [ sh:class skg:research_product ;
             sh:minCount 0 ;
             sh:nodeKind sh:BlankNodeOrIRI ;
@@ -116,7 +116,7 @@ skg_sh_current:ServiceShape a sh:NodeShape ;
             sh:path dcterms:subject ] ;
     sh:targetClass srv:Service .
 
-skg_sh_current:SoftwareSourceCodeShape a sh:NodeShape ;
+skg_sh_service:SoftwareSourceCodeShape a sh:NodeShape ;
     sh:property [ sh:class foaf:Document ;
             sh:minCount 0 ;
             sh:nodeKind sh:BlankNodeOrIRI ;
@@ -126,7 +126,7 @@ skg_sh_current:SoftwareSourceCodeShape a sh:NodeShape ;
             sh:nodeKind sh:BlankNodeOrIRI ;
             sh:path schema:codeRepository ] .
 
-skg_sh_current:StandardShape a sh:NodeShape ;
+skg_sh_service:StandardShape a sh:NodeShape ;
     sh:property [ sh:minCount 0 ;
             sh:nodeKind sh:Literal ;
             sh:path skos:prefLabel ] .
