@@ -1,0 +1,272 @@
+overlay: 1.0.0
+info:
+  title: Service extension
+  description: this overlay adds changes for supporting Service entities to the SKG-IF API
+  version: 1.0.0
+actions:
+  - target: $.tags
+    update:
+      - name: Service
+        description: service operations (skg-if extension)
+  - target: $.paths
+    update:
+      '/services':
+        get:
+          tags:
+            - Service
+          summary: Get list of service. 
+          operationId: getServices
+          description: |
+              Get a list of `service`. See definition in SKG-IF [Service] (https://skg-if.github.io/interoperability-framework/docs/service.html) (entity_type: service ).
+
+              __Attribute filters__ \
+              You can filter using these attributes of the `service` object
+              | Filter key| Attribute filter example |
+              | -------- | -------- |
+              | identifiers.id | `identifiers.id:https://hdl.handle.net/11234/1-1702` |
+              | name | `name:UDPIpe` |
+              | website | `website:https://ufal.mff.cuni.cz/udpipe` |
+              | country | `country:CZ` |
+
+              __Convenience filters__ \
+              These filters aren't attributes of the `organization` object, but they're handy for solving some common use cases.
+
+              | Filter key | Filter value | List returned | Attribute filter example |
+              | -------- | -------- | ------- | ------- |
+              | cf.search.name | a string | `organisation` with name containing the filter value | `cf.search.name:UFAL` |
+
+              __Query parameter syntax examples__ \
+    
+               * `/services?filter=identifiers.scheme:ror,identifiers.id:11234/1-1702`
+               * `/services?filter=cf.search.name:UDPipe`
+               * `/services?filter=cf.search.name:UDPipe&page=1&page_size=5`
+# refine the last exmple into one really needing multiple pages
+
+          parameters:    
+            - $ref : '#/components/parameters/filterQueryParam'
+          responses:
+            '200':
+              description: Success
+              content:
+                application/json:
+                  schema:
+                    properties:
+                      "@context":
+                        type: array
+                        description: JSON-LD context # not displayed in Stoplight elements
+                        minItems: 4 # http://../skg-if.json, http://../skg-if-api.json, http://../skg-if-ext-serv.json and @base
+                        uniqueItems: true
+                        items:
+                          anyOf:
+                            - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                            - $ref: '#/components/schemas/JsonLdCtxSearch'
+                            - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+#add the 4th JsonLdCtx
+                      meta:
+                        type: object
+                        $ref: '#/components/schemas/Meta'
+                      "@graph":
+                          type: array
+                          items:     
+                            $ref: '#/components/schemas/Service'
+                    required: [ "@context", "meta", "@graph" ]
+  - target: $.paths
+    update:
+      '/services/{short_local_identifier}':
+        get:
+          tags:
+            - Service
+          summary: Get service by id
+          description: |
+              Get a single `service`. See definition in SKG-IF extension [Service](https://skg-if.github.io/interoperability-framework/docs/service.html) ( entity_type:service ).
+          operationId: getServiceById
+          parameters:
+              - $ref : '#/components/parameters/shortLocalIdPathParam'
+          responses:
+            '200':
+              description: Success
+              content:
+                # not 'application/json-ld' to be compatible with StopLight PRISM tool
+                application/json: 
+                  schema:
+                    required: ["@context", "@graph"]
+                    properties:
+                      "@context":
+                         type: array
+                         description: JSON-LD context # not displayed in Stoplight elements
+                         minItems: 4 # http://../skg-if.json, http://../skg-if-api.json, http://../skg-if-ext-serv.json and @base
+                         uniqueItems: true
+                         items:
+                            anyOf:
+                              - $ref: '#/components/schemas/JsonLdCtxDataModel'
+                              - $ref: '#/components/schemas/JsonLdCtxSearch'
+                              - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                      "@graph":
+                        type: array
+                        minItems: 1
+                        maxItems: 1
+                        items:
+                          $ref: "#/components/schemas/Service"
+
+  - target: $.components.parameters
+    update:
+      filterQueryParam: # filterQueryParam duplicated in each search endpoint ( only way to add distinct examples for each endpoint )
+        name: filter
+        in: query
+        description: |
+            Search filter. Format : Coma separated filter_name:filter_value elements ( filter_name_1:filter_value_1,filter_name_2:filter_value_2,filter_name_3:filter_value_3... ). Server side operator used is _AND_.
+        schema:
+          type: string
+          pattern: '^(,?.+:.+)*$'
+
+  - target: $.components.schemas
+    update:
+      Service:
+        type: object
+        title: 'Service'
+        description:  "`service` object. See definition in SKG-IF [Service](https://skg-if.github.io/...) ( entity_type:service )."
+        allOf:
+          - $ref: "#/components/schemas/Entity"
+          - type: object
+            required: [
+              "local_identifier","entity_type"
+            ]        
+            properties:
+              entity_type:  # was already specified?
+                default: "service"
+                type: string
+                x-faker:
+                  helpers.arrayElement: [["service"]]
+              identifiers:
+                type: array
+                items:
+                  properties:
+                    scheme: 
+                      type: string
+                      x-faker: 
+                        helpers.arrayElement: [["url"]]
+                    value: 
+                      type: string
+                      x-faker:
+                        fake : ['{{internet.url}}/record/{{random.alphaNumeric(8)}}']
+              name:
+                type: array
+                description: The names of a [service] (multiple for multilingualism)
+              # simplified compared to earlier spec, no iso-639-1 language identifiers
+                items:
+                  type: string
+                examples:
+                  - ["UDPipe", "UDPipe 工具"]
+
+              description:
+                type: object
+                description: |
+                  The descriptions of a `service` (multiple for multilinguism).\
+                  The object is a dictionary, the keys represent language codes following [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1).\
+                  The special key `none` is reserved whenever the information about the language is not available or cannot be shared.
+                patternProperties:
+                  "^([a-z]{2}|none)$":
+                    type: array
+                    items:
+                      type: string
+                      x-faker:
+                       random.words: [ 20 ]
+                    examples:
+                      - {"en": ["UDPipe 2 is a Python prototype, capable of performing tagging, lemmatization and syntactic analysis of CoNLL-U input. It took part in several competitions, reaching excellent results in all of them", "Summary"]}
+
+              audience_byrole:
+                description:  The audience(s) for which the service is intended to be used. This can  both express desire and/or design of the service operators. Values are defined in "https://vocabs.sshopencloud.eu/vocabularies/sshoc-audience/audienceScheme", and should be used with prefix "sshocaudience" defined in the context.
+                type: array
+                items:
+                  type: string
+                  pattern: "^sshocaudience:[A-Za-z0-9._-]+$"
+                examples:
+                  - ["sshocaudience:public", "sshocaudience:student" ]
+
+              audience_byjurisdiction:
+                description: The jurisdiction that is given by the service operator's legal status limits the audience. POtential values are from Global, Institution, National, or Regional aka multiple countries, from https://zenodo.org/records/15516020
+                type: string
+                enum: ["Global", "Institution", "National", "Regional"]
+                examples: 
+                  - [National]
+
+#              disciplines:
+#                type string
+#TODO
+              is_accessible_for_free:
+                description: A property to flag that the Service is accessible for free, in the academic world most services are free or have a free modus
+                type: boolean
+                deafault: true
+
+              invocation_type:
+                type: string
+                pattern: "^sshocinvt:[A-Za-z0-9._-]+$"
+                description:  The way the service is used or called. multiple values are possible, access rights and licenses are assumed to be the same, the property values are defined in "https://vocabs.sshopencloud.eu/vocabularies/invocation-type/" and should be used with the prefix "sshocinvt" defined in the context.
+                  - [ "sshocinvt:restfullWebservice", "sshocinvt:webApplication" ]
+
+              life_cycle_status:
+                type: string
+                pattern: "^elcs:[A-Za-z0-9._-]+$"
+                description: indicates the development cycle and/or maturity status of the service, the property values are defined in the skos schema "https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/" and should be used with the prefix "elcs" defined in the context.
+                examples:
+                  - ["elcs:life_cycle_status_production", "elcs:TRL6" ]
+
+              website:
+                 type: string
+                 description: The landingpage or website URL for a Service.
+                 examples:
+                   - "https://ufal.mff.cuni.cz/udpipe"
+
+              availability_geographic:
+                type: string
+                pattern: "^eoscgeosavail:[A-Za-z0-9._-]+$"
+                description: list of countries and regions where the service is available, the property values are defined in the skos schema "https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/" and should be used with the prefix "eoscgeoavail"  defined in the context.
+                examples:
+                  - ["eoscgeoavail:eu", "eoscgeoavail:uk"]
+
+              supported_language:
+                type: array
+                description: The languages supported by the service
+                items:
+                  properties:
+                    scheme:
+                      type: string
+                      pattern: "^([a-z]{2}|none)$"
+
+              deployment_of:
+                type: array
+                description: Research Product of type software, software class or sourcecode repository link that the service is based on.
+                items:
+                  type: object
+                  required: ["@id", "@type"]
+                  properties:
+                    "@id":
+                      type: string
+                      format: uri
+                      description: IRI identifying the service software 
+                    "@type":
+                      type: string
+                      description: >
+                        RDF type of the referenced service software, expressed as a CURIE
+                        (e.g. schema:SoftwareSourceCode, skg:research_product)
+                      pattern: "^[A-Za-z][A-Za-z0-9._-]*:[A-Za-z0-9._-]+$"
+                examples:
+                  -  [ { "@id": "https://github.com/ufal/udpipe", "@type": "schema:SoftwareSourceCode"}, { "@id": "http://example.org/research_product/RP_101", "@type": "skg:research_product"} ]
+#todo              relevant_organisation:
+#todo              api_profile:
+#todo              provider:
+#todo              related_product
+
+ #add "service" as portal type
+  - target: $.components.schemas.Venue.allOf[1].properties.type.enum
+    update:
+        - portal
+  - target: $.components.schemas.Venue.allOf[1].properties
+    update:
+      services:
+        type: array
+        items:
+          $ref: '#/components/schemas/Service'
+
+  
+
