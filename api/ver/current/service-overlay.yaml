@@ -61,6 +61,9 @@ actions:
                             - $ref: '#/components/schemas/JsonLdCtxDataModel'
                             - $ref: '#/components/schemas/JsonLdCtxSearch'
                             - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                            - $ref: '#/components/schemas/JsonLdCtxExt-srv'
+                        examples:
+                          - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base": "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}, "https://w3id.org/skg-if/extension/srv/context/skg-if.json"]
 #add the 4th JsonLdCtx
                       meta:
                         type: object
@@ -70,6 +73,7 @@ actions:
                           items:     
                             $ref: '#/components/schemas/Service'
                     required: [ "@context", "meta", "@graph" ]
+                    
   - target: $.paths
     update:
       '/services/{short_local_identifier}':
@@ -101,6 +105,9 @@ actions:
                               - $ref: '#/components/schemas/JsonLdCtxDataModel'
                               - $ref: '#/components/schemas/JsonLdCtxSearch'
                               - $ref: '#/components/schemas/JsonLdCtxBaseOrMore'
+                              - $ref: '#/components/schemas/JsonLdCtxExt-srv'
+                         examples:
+                           - ["https://w3id.org/skg-if/context/1.1.0/skg-if.json", "https://w3id.org/skg-if/context/1.0.0/skg-if-api.json", {"@base": "https://w3id.org/skg-if/sandbox/my-skg-acronym/"}, "https://w3id.org/skg-if/extension/srv/context/skg-if.json"]
                       "@graph":
                         type: array
                         minItems: 1
@@ -121,6 +128,14 @@ actions:
 
   - target: $.components.schemas
     update:
+      JsonLdCtxExt-srv:
+        type: string
+        description: "URL to SKG-IF service extension data model context"
+        enum:
+          - https://w3id.org/skg-if/extension/srv/context/skg-if.json
+        x-faker:
+          fake: ['https://w3id.org/skg-if/extension/ra-skg/context/skg-if.json']
+
       Service:
         type: object
         title: 'Service'
@@ -133,10 +148,10 @@ actions:
             ]        
             properties:
               entity_type:  # was already specified?
-                default: "service"
                 type: string
+                default: "service"
                 x-faker:
-                  helpers.arrayElement: [["service"]]
+                  fake: ["service"]
               identifiers:
                 type: array
                 items:
@@ -145,10 +160,14 @@ actions:
                       type: string
                       x-faker: 
                         helpers.arrayElement: [["url"]]
+                      examples:
+                        - "ELG catalogue"
                     value: 
                       type: string
                       x-faker:
                         fake : ['{{internet.url}}/record/{{random.alphaNumeric(8)}}']
+                      examples:
+                        - "https://live.european-language-grid.eu/catalogue/tool-service/18189"
               name:
                 type: array
                 description: The names of a [service] (multiple for multilingualism)
@@ -188,7 +207,7 @@ actions:
                 type: string
                 enum: ["Global", "Institution", "National", "Regional"]
                 examples: 
-                  - [National]
+                  - ["National"]
 
 #              disciplines:
 #                type string
@@ -196,18 +215,23 @@ actions:
               is_accessible_for_free:
                 description: A property to flag that the Service is accessible for free, in the academic world most services are free or have a free modus
                 type: boolean
-                deafault: true
+                default: true
 
               invocation_type:
-                type: string
-                pattern: "^sshocinvt:[A-Za-z0-9._-]+$"
+                type: array
                 description:  The way the service is used or called. multiple values are possible, access rights and licenses are assumed to be the same, the property values are defined in "https://vocabs.sshopencloud.eu/vocabularies/invocation-type/" and should be used with the prefix "sshocinvt" defined in the context.
-                  - [ "sshocinvt:restfullWebservice", "sshocinvt:webApplication" ]
+                items:
+                  type: string
+                  pattern: "^sshocinvt:[A-Za-z0-9._-]+$"
+                examples:
+                  - ["sshocinvt:restfullWebservice", "sshocinvt:webApplication" ]
 
               life_cycle_status:
-                type: string
-                pattern: "^elcs:[A-Za-z0-9._-]+$"
+                type: array
                 description: indicates the development cycle and/or maturity status of the service, the property values are defined in the skos schema "https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/" and should be used with the prefix "elcs" defined in the context.
+                items:
+                  type: string
+                  pattern: "^elcs:[A-Za-z0-9._-]+$"
                 examples:
                   - ["elcs:life_cycle_status_production", "elcs:TRL6" ]
 
@@ -218,20 +242,21 @@ actions:
                    - "https://ufal.mff.cuni.cz/udpipe"
 
               availability_geographic:
-                type: string
-                pattern: "^eoscgeosavail:[A-Za-z0-9._-]+$"
-                description: list of countries and regions where the service is available, the property values are defined in the skos schema "https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/" and should be used with the prefix "eoscgeoavail"  defined in the context.
+                type: array
+                description: list of countries and regions where the service is available, the property values are defined in the skos schema "https://vocabs.sshopencloud.eu/vocabularies/eosc-geographical-availability" and should be used with the prefix "eoscgeoavail"  defined in the context.
+                items:
+                  type: string
+                  pattern: "^eoscgeoavail:[A-Za-z0-9._-]+$"
                 examples:
                   - ["eoscgeoavail:eu", "eoscgeoavail:uk"]
-
               supported_language:
                 type: array
                 description: The languages supported by the service
                 items:
-                  properties:
-                    scheme:
-                      type: string
-                      pattern: "^([a-z]{2}|none)$"
+                  type: string
+                  pattern: "^([a-z]{2}|none)$"
+                examples:
+                   - ["en", "nl"]
 
               deployment_of:
                 type: array
@@ -252,10 +277,59 @@ actions:
                       pattern: "^[A-Za-z][A-Za-z0-9._-]*:[A-Za-z0-9._-]+$"
                 examples:
                   -  [ { "@id": "https://github.com/ufal/udpipe", "@type": "schema:SoftwareSourceCode"}, { "@id": "http://example.org/research_product/RP_101", "@type": "skg:research_product"} ]
-#todo              relevant_organisation:
-#todo              api_profile:
-#todo              provider:
-#todo              related_product
+
+              related_products:
+                description: mainly used for noting citation of the use of services, non-local identifiers can be used for external references.
+                $ref: '#/components/schemas/ProductRelated'
+                examples:
+                  - cites: ["10.18653/v1/K17-3009", "10.30564/fls.v6i5.6957", "10.18653/v1/K18-2020"]
+
+              "dcterms:conformsTo":
+                description: IRI of the API profile/standard, either simple link or complex (embedded) structure
+                anyOfAPI:
+                  - type: string
+                    format: uri
+                  - $ref: "#/components/schemas/APIProfile"
+                example:
+                  - "https://lindat.mff.cuni.cz/services/udpipe/api-reference.php"
+
+              relevant_organisation:
+                type: array
+                description: List of relevant Organisation  associated with the `Service`, in case the individual affiliations of a `person` are not available.
+                items:
+                  $ref: '#/components/schemas/Organisation'
+                example:
+                  - local_identifier: https://ror.org/024d6js02
+                    entity_type: organisation
+                    name: "Charles University"
+                    types: [education, research, facility]
+                    country: CZ
+
+      APIProfile:
+        type: object
+        description: API Profile (endpoint + one or more spec document URLs).
+        required: ["dcat:endpointURL", "schema:url"]
+        properties:
+          "dcat:endpointURL":
+            minItems: 1
+            maxItems: 1
+            type: array
+            items:
+              type: string
+              format: uri
+          "schema:url":
+            type: array
+            minItems: 1
+            items:
+              type: string
+              format: uri
+        example: 
+          "dcat:endpointURL":
+            - "https://lindat.mff.cuni.cz/services/udpipe/api/process"
+          "schema:url":
+            - "https://lindat.mff.cuni.cz/services/udpipe/"
+            - "https://lindat.mff.cuni.cz/services/udpipe/api-reference.php"
+            - "https://ufal.mff.cuni.cz/udpipe"
 
  #add "service" as portal type
   - target: $.components.schemas.Venue.allOf[1].properties.type.enum
