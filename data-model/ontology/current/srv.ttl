@@ -11,6 +11,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix doco:  <http://purl.org/spar/doco/> .
 @prefix fabio: <http://purl.org/spar/fabio/> .
+@prefix frapo: <http://purl.org/spar/frapo/> .
 @prefix foaf:  <http://xmlns.com/foaf/0.1/> .
 @prefix frbr:  <http://purl.org/vocab/frbr/core#> .
 @prefix owl:   <http://www.w3.org/2002/07/owl#> .
@@ -81,7 +82,7 @@ schema:SoftwareSourceCode a owl:Class ;
     dc:description """
 The properties that can be used with this class are:
 
-* foaf:homepage -[0..N]-> foaf:Document
+* srv:website -[0..N]-> foaf:Document
 * schema:codeRepository -[1..N]-> schema:url """ ;
     rdfs:comment """Computer programming source code, including full (compile-ready) solutions, code snippet samples, templates, scripts, and other software artefacts.  """ ; 
     rdfs:isDefinedBy schema: .
@@ -186,8 +187,8 @@ In SKG-IF, it is used to link to entities belonging to the following data types 
     rdfs:range xsd:string ;
     rdfs:isDefinedBy srv: .
 
-srv:deploymentOf a owl:ObjectProperty ;
-    rdfs:label "srv:deploymentOf (SKG-IF labels: deployment_of)" ;
+srv:isDeploymentOf a owl:ObjectProperty ;
+    rdfs:label "srv:isDeploymentOf (SKG-IF labels: is_deployment_of)" ;
     dc:description """In SKG-IF, it is used in the following classes (domain):
 * srv:Service
         
@@ -264,7 +265,7 @@ srv:relatedResearchProduct a owl:ObjectProperty ;
 In SKG-IF, it is used to link a Service to one or more research products 
 (e.g. software, datasets, workflows, publications) that are conceptually 
 related but not necessarily deployed by the service.""" ;
-    rdfs:comment "Links a Service to one or more related SKG-IF research products (e.g., software, datasets, workflows). Complements `srv:deploymentOf` (software actually deployed)." ;
+    rdfs:comment "Links a Service to one or more related SKG-IF research products (e.g., software, datasets, workflows). Complements `srv:isDeploymentOf` (software actually deployed)." ;
     rdfs:domain srv:Service ;
     rdfs:range skg:research_product ;
     rdfs:isDefinedBy srv: .
@@ -330,7 +331,56 @@ srv:FacilityPortal a owl:Class ;
         owl:minCardinality "1"^^xsd:nonNegativeInteger
     ] .
 
-    
+#
+# special types / concepts for Service ontology    
+#
+# additional organisation types should be provided for modelling support and operating services
+# archive , company , education , facility , government , healthcare , nonprofit , funder , research , unspecified 
+# with types: infrastructure, hostingLegalEntity ( see also EOSC profiles, use legal-entity names)
+# there seems no problem modeling a tool/service(s) as organisation ie. frapo defines facility organisation type as 
+# "A place or installation built or designed to serve a specific function or provide a specific service
+# 
+# portal -> dcat:Catalog ( lacking supporting facilities and expertise offering)
+# facility -> frapo: facility (is already used in skg-if organisation)
+# hosting-legal-entity/provider/operator -> eosc-profiles (v5) hostingLegalEntity
+# research-infrastructure -> eosc-profiles (v5) mentioned 
+# see https://eosc-provider-profile.readthedocs.io/en/5.0/elements.html
+# unfortunately eosc profiles currently not yet eosc profile available as a rdf ontology
+#
+frapo:Facility a owl:Class ;
+    rdfs:label "facility"@en ;
+    rdfs:comment "A place or installation built or designed to serve a specific function or provide a specific service, for example an animal breeding centre, a DNA sequencing facility or a confocal imaging laboratory."@en ;
+    rdfs:subClassOf frapo:InfrastructureEntity .
+
+srv:ResearchInfrastructure a owl:Class ;
+    rdfs:label "research infrastructure" ;
+    rdfs:comment "organisation that provides facilities, resources and services for the research communities to conduct research."@en .
+srv:isPartOfResearchInfrastructure a owl:ObjectProperty ;
+   rdfs:label "part of research infrastructure"@en ;
+   rdfs:domain srv:Service ;
+   rdfs:range foaf:Organisation ;
+   rdfs:comment "is part of research infrastructure organisation"@en .
+
+srv:HostingOrganisation a owl:Class ;
+   rdfs:label "hosting organisation"@en ;
+   rdfs:comment "organisation reponsible for hosting a service or infrastructure component"@en .
+srv:hasHostingOrganisation a owl:ObjectProperty ;
+   rdfs:label "has hosting entity"@en ;
+   rdfs:domain srv:Service ;
+   rdfs:range foaf:Organisation ;
+   rdfs:comment "service is hosted by"@en .
+srv:hasHostingLegalEntity a owl:ObjectProperty ;
+   rdfs:label "has hosting legal entity"@en ;
+   rdfs:domain srv:Service ;
+   rdfs:range foaf:Organisation ;
+   rdfs:comment "service associated legally responsible hosting organisation (legal entity)"@en .
+
+srv:Portal a owl:Class ;
+    rdfs:label "portal" ;
+    rdfs:comment "organisation responsible for aggregating and cataloging meta data of data sets and services and supporting users search access"@en ;
+    rdfs:subClassOf dcat:Catalog .
+
+
 
 ############################
 # Main Service Class
@@ -341,8 +391,8 @@ srv:Service a owl:Class ;
     rdfs:subClassOf schema:SoftwareApplication ;
     dc:description """The properties that can be used with this class are:
 * datacite:hasIdentifier -[0..N]-> datacite:Identifier
-* dcterms:description -[0..1]-> rdfs:Literal
-* foaf:homepage -[0..1]-> foaf:Document
+* dcterms:description -[0..N]-> rdfs:langString
+* srv:website -[0..1]-> foaf:Document
 * srv:audienceJurisdiction -[0..N]-> xsd:string
 * srv:intendedAudienceRole -[0..N]-> skos:Concept 
 * srv:invocationType -[0..N]-> skos:Concept 
@@ -351,13 +401,17 @@ srv:Service a owl:Class ;
 * dcterms:subject -[0..N]-> owl:Thing
 * srv:hasTopic -[0..N]-> fabio:SubjectTerm
 * srv:supportedLanguage -[0..N]-> lvont:Language
+* srv:isPartOfResearchInfrastructure -[0..N]-> foaf:Organization
+* srv:hasHostingOrganisation -[0..N]-> foaf:Organization
+* srv:hasHostingLegalEntity -[0..1]-> foaf:Organization
 * dcterms:relation -[0..N]-> foaf:Organization
 * dcterms:conformsTo -[0..N]-> srv:APIProfile
 * schema:provider -[0..1]-> srv:FacilityPortal
-* srv:deploymentOf -[0..N]-> fabio:Software
-* srv:deploymentOf -[0..N]-> schema:SoftwareSourceCode
-* srv:deploymentOf -[0..N]-> skg:research_product
+* srv:isDeploymentOf -[0..N]-> fabio:Software
+* srv:isDeploymentOf -[0..N]-> schema:SoftwareSourceCode
+* srv:isDeploymentOf -[0..N]-> skg:research_product
 * srv:relatedResearchProduct -[0..N]-> skg:research_product
+* srv:hasVenue -[0..1]-> skg:Venue
 * skos:prefLabel -[1..N]-> rdfs:Literal
 * skos:altLabel -[0..N]-> rdfs:Literal""" ;
     rdfs:isDefinedBy srv: .
@@ -374,6 +428,6 @@ srv: a owl:Ontology ;
     vann:preferredNamespacePrefix "srv" ;
     vann:preferredNamespaceUri <https://w3id.org/skg-if/extension/srv/ontology/> ;
     rdfs:comment "This extension of the SKG-IF data model introduces entities necessary to model the Service type of objects that are use to process data in different use-cases, as well as the relationships with well-established entities in the SKG-IF model communication domain. This extension is being developed in the context of the OSTrails project" ;
-    owl:versionIRI <https://w3id.org/skg-if/extension/srv/ontology/service/7.0.0/> ;
-    owl:versionInfo "7.0.0" .
+    owl:versionIRI <https://w3id.org/skg-if/extension/srv/ontology/service/1.1.0/> ;
+    owl:versionInfo "1.1.0" .
 

@@ -58,7 +58,7 @@
     "api_specification_uri": { "@id": "schema:url", "@type": "@id" },
 
 
-    "website": { "@id": "foaf:homepage", "@type": "@vocab" },
+    "website": { "@id": "foaf:homepage", "@type": "@id" },
 
     "availability_geographic": { "@id": "srv:geographicalAvailability", "@type": "@vocab", "@context": { "@base": "sshopencloudvocabs:eosc-geographical-availability" } },
 
@@ -66,18 +66,37 @@
     "supported_language": { "@id": "srv:supportedLanguage", "@type": "@vocab", "@context": { "@base": "http://lexvo.org/id/" } },
 
 
-    "deployment_of": { "@id": "srv:deploymentOf", "@type": "@id" },
+    "deployment_of": { "@id": "srv:isDeploymentOf", "@type": "@id" },
 
     "related_research_product": { "@id": "srv:relatedResearchProduct", "@type": "@id" },
 
-
     "has_topic": { "@id": "srv:hasTopic", "@type": "@id" },
+    "has_venue": { "@id": "srv:hasVenue", "@type": "@id" },
 
     "relevant_organisations": { "@id": "dcterms:relation", "@type": "@id" },
 
-    "alt_label": { "@id": "skos:altLabel", "@container": "@language" },
+    "related_organisations": "@nest",
+    "research_infrastructure": { "@id": "dcterms:partOf", "@type": "@vocab", "@nest": "related organisations" } ,
+    "in_portal": { "@id": "dcterms:publisher", "@type": "@vocab", "@nest": "related organisations" } ,
+    "hosting_legal_entity": { "@id": "srv:hostingLegalEntity", "@type": "@vocab", "@nest": "related organisations" } ,
+    "other": { "@id": "dcterms:relation", "@type": "@vocab", "@nest": "related organisations" } ,
 
-    "name": { "@id": "skos:prefLabel", "@container": "@language" }
+
+    "alt_name": { "@id": "skos:altLabel" },
+
+    "name": { "@id": "skos:prefLabel" }
+
+    "Service": "srv:Service",
+    "FacilityPortal": "srv:FacilityPortal",
+    "APIProfile": "srv:APIProfile",
+
+    "facility": "frapo:Facility",
+    "portal":  "srv:Portal",
+    "research_infrastructure": "srv:ResearchInfrastructure",
+    "has_research_infrastructure": "srv:isPartOfResearchInfrastructure",
+    "has_hosting_legal_entity": "srv:hasHostingLegalEntity"
+    "has_hosting_organisation": "srv:hasHostingOrganisation"
+    "hosting_organisation": "srv:HostingOrganisation"
   }
 }
 
