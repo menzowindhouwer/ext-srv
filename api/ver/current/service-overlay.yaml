@@ -146,7 +146,7 @@ actions:
         enum:
           - https://w3id.org/skg-if/extension/srv/context/skg-if.json
         x-faker:
-          fake: ['https://w3id.org/skg-if/extension/ra-skg/context/skg-if.json']
+          fake: ['https://w3id.org/skg-if/extension/srv/context/skg-if.json']
 
       Service:
         type: object
@@ -180,7 +180,7 @@ actions:
                         fake : ['{{internet.url}}/record/{{random.alphaNumeric(8)}}']
                       examples:
                         - "https://live.european-language-grid.eu/catalogue/tool-service/18189"
-              name:
+              srv_name:
                 type: array
                 description: The names of a [service] (multiple for multilingualism)
               # simplified compared to earlier spec, no iso-639-1  qualified strings
@@ -203,9 +203,9 @@ actions:
                       x-faker:
                        random.words: [ 20 ]
                 examples:
-                   - {"en": ["UDPipe 2 is a Python prototype, capable of performing tagging, lemmatization and syntactic analysis of CoNLL-U input. It took part in several competitions, reaching excellent results in all of them", "Summary"]}
+                   - {"en": ["UDPipe 2 is a Python prototype, capable of performing tagging, lemmatization and syntactic analysis of CoNLL-U input. It took part in several competitions, reaching excellent results in all of them", "Summary"], "cs": ["UDPipe je trénovatelný nástroj pro tokenizaci, tagging, lemmatizaci a závislostní parsing CoNLL-U souborů. UDPipe je jazykově nezávislý a pro natrénování modelů využívá anotovaná data ve formátu Universal Dependencies"] }
 
-              audience_byrole:
+              srv_audience_byrole:
                 description:  The audience(s) for which the service is intended to be used. This can  both express desire and/or design of the service operators. Values are defined in "https://vocabs.sshopencloud.eu/vocabularies/sshoc-audience/audienceScheme", and should be used with prefix "sshocaudience" defined in the context.
                 type: array
                 items:
@@ -214,7 +214,7 @@ actions:
                 examples:
                   - ["sshocaudience:public", "sshocaudience:student" ]
 
-              audience_byjurisdiction:
+              srv_audience_byjurisdiction:
                 description: The jurisdiction that is given by the service operator's legal status limits the audience. POtential values are from Global, Institution, National, or Regional aka multiple countries, from https://zenodo.org/records/15516020
                 type: string
                 enum: ["Global", "Institution", "National", "Regional"]
@@ -223,12 +223,12 @@ actions:
 #TODO
 #              disciplines:
 
-              is_accessible_for_free:
+              srv_is_accessible_for_free:
                 description: A property to flag that the Service is accessible for free, in the academic world most services are free or have a free modus
                 type: boolean
                 default: true
 
-              invocation_type:
+              srv_invocation_type:
                 type: array
                 description:  The way the service is used or called. multiple values are possible, access rights and licenses are assumed to be the same, the property values are defined in "https://vocabs.sshopencloud.eu/vocabularies/invocation-type/" and should be used with the prefix "sshocinvt" defined in the context.
                 items:
@@ -237,7 +237,7 @@ actions:
                 examples:
                   - ["sshocinvt:restfullWebservice", "sshocinvt:webApplication" ]
 
-              life_cycle_status:
+              srv_life_cycle_status:
                 type: array
                 description: indicates the development cycle and/or maturity status of the service, the property values are defined in the skos schema "https://vocabs.sshopencloud.eu/vocabularies/eosc-life-cycle-status/" and should be used with the prefix "elcs" defined in the context.
                 items:
@@ -246,13 +246,13 @@ actions:
                 examples:
                   - ["elcs:life_cycle_status_production", "elcs:TRL6" ]
 
-              website:
+              srv_website:
                  type: string
                  description: The landingpage or website URL for a Service.
                  examples:
                    - "https://ufal.mff.cuni.cz/udpipe"
 
-              availability_geographic:
+              srv_availability_geographic:
                 type: array
                 description: list of countries and regions where the service is available, the property values are defined in the skos schema "https://vocabs.sshopencloud.eu/vocabularies/eosc-geographical-availability" and should be used with the prefix "eoscgeoavail"  defined in the context.
                 items:
@@ -260,16 +260,17 @@ actions:
                   pattern: "^eoscgeoavail:[A-Za-z0-9._-]+$"
                 examples:
                   - ["eoscgeoavail:eu", "eoscgeoavail:uk"]
-              supported_language:
+
+              srv_supported_language:
                 type: array
                 description: The languages supported by the service
                 items:
                   type: string
-                  pattern: "^([a-z]{2}|none)$"
+                  pattern: "^(lexvo:iso639-3/[a-z]{2}|none)$"
                 examples:
-                   - ["en", "nl"]
+                   - ["lexvo:iso639-3/en", "lexvo:iso639-3/nl"]
 
-              deployment_of:
+              srv_deployment_of:
                 type: array
                 description: Research Product of type software, software class or sourcecode repository link that the service is based on.
                 items:
@@ -289,17 +290,20 @@ actions:
                 examples:
                   -  [ { "@id": "https://github.com/ufal/udpipe", "@type": "schema:SoftwareSourceCode"}, { "@id": "http://example.org/research_product/RP_101", "@type": "skg:research_product"} ]
 
-              has_hosting_legal_entity:
+              srv_has_hosting_legal_entity:
                 description: organisation (legal entity) legally responsible for the hosted service
                 $ref: '#/components/schemas/Organisation'
-                example:
-                  - local_identifier: https://ror.org/024d6js02
-                    entity_type: 'organisation'
-                    name: "Charles University"
-                    types: [education, research]
-                    country: CZ
+                examples: 
+                    - local_identifier: https://ror.org/024d6js02
+                      entity_type: 'organisation'
+                      identifiers: [ {scheme: "ror", value: "https://ror.org/024d6js02"}, {scheme: "ISNI", value: "0000 0004 1937 116X"} ]
+                      name: "Charles University"
+                      website: https://www.cuni.cz
+                      types: [education, research]
+                      country: CZ
+                
 
-              has_hosting_organisation:
+              srv_has_hosting_organisation:
                 type: array
                 description: organisation responsible for hosting and operating the service
                 items:
@@ -309,10 +313,10 @@ actions:
                     entity_type: 'organisation'
                     name: "Digital Research Infrastructure for Language Technologies, Arts and Humanities"
                     short_name: "LINDAT"
-                    types: [facility]
+                    types: [facility, srv_hosting_organisation]
                     country: CZ
                 
-              has_research_infrastructure:
+              srv_has_research_infrastructure:
                 type: array
                 description: research infrastructure organisation(s) involved
                 items:
@@ -324,36 +328,71 @@ actions:
                       - scheme: ror
                         value: https://ror.org/03wp25384
                     name: "CLARIN ERIC"
-                    types: [facility, research_infrastructure]
+                    types: [facility, srv_research_infrastructure]
                     country: NL
 
-              has_venue:
-                description: provide reference to portal/venue through which the serice is advertised (catalogue) and accessible.
-                $ref: '#/components/schemas/Venue'
+              srv_venues:
+                type: array
+                description: provide reference to portal/venue through which the service is advertised (catalogue) and accessible.
+                items:
+                  properties:
+                    local_identifier: 
+                      type: string
+                    entity_type: 
+                      type: string
+                    name:
+                      type: string
+                    website:
+                      type: string
+                      format: uri                
+                    types:
+                      type: array
+                      items:
+                        type: string
                 example:
-                  - local_identifier: venue_identifier1
-                    entity_type: 'venue'
-                    name: "EOSC node"
-                    types: [portal]
-                  
-                
+                   - local_identifier: https://ror.org/03sj9b840
+                     entity_type: "venue"
+                     name: "EOSC node"
+                     website: https://open-science-cloud.ec.europa.eu/support/getting-started-eosc-eu-node
+                     types: [srv_portal]
+                   - local_identifier: https://ror.org/00zpk0t94
+                     entity_type: "venue"
+                     name: Arctic Portal
+                     types: [srv_portal]
+                     website: https://arcticportal.org 
+                   - local_indentifier: https://portal.ariadne-infrastructure.eu
+                     entity_type: "venue"
+                     name: "Ariadne portal"
+                     types: [srv_portal]
+                     website: https://portal.ariadne-infrastructure.eu/about
+
               related_products:
                 description: mainly used for noting citation of the use of services, non-local identifiers can be used for external references.
                 $ref: '#/components/schemas/ProductRelated'
                 examples:
                   - cites: ["10.18653/v1/k17-3009", "10.30564/fls.v6i5.6957", "10.18653/v1/k18-2020"]
 
-              "dcterms:conformsto":
-                description: iri of the api profile/standard, either simple link or complex (embedded) structure
-                anyofapi:
+              "dcterms:conformsTo":
+                description: IRI of the API profile/standard, either simple link or complex (embedded) structure
+                anyOf:
                   - type: string
                     format: uri
-                  - $ref: "#/components/schemas/apiprofile"
+                  - $ref: "#/components/schemas/srv_api_profile"
                 example:
                   - "https://lindat.mff.cuni.cz/services/udpipe/api-reference.php"
 
+            topics:
+              type: array
+              description:  List of `topic` covered by the `product`
+              items:
+                required: [ "term" ]
+                properties:
+                  term:
+                    $ref: '#/components/schemas/Topic'
+                  # TODO provenance ?
+                labels: [Natural Language Processing, NLP]
 
-              relevant_organisations:
+              srv_relevant_organisations:
                 type: array
                 description: list of relevant organisation  associated with the `service`, in case the individual affiliations of a `person` do not fit the contribution or are not available.
                 items:
@@ -361,29 +400,29 @@ actions:
                 example:
                   - local_identifier: https://ror.org/00dd4fz34
                     entity_type: organisation
-                    name: "digital research infrastructure for language technologies, arts and humanities"
-                    short_name: "lindat"
-                    types: [facility]
+                    name: "Digital Research Infrastructure for Language Technologies, Arts and Humanities"
+                    short_name: "LINDAT"
+                    types: [facility, srv_hosting_organisation]
                     country: CZ
                   - local_identifier: https://ror.org/024d6js02
                     entity_type: organisation
-                    name: "charles university"
+                    name: "Charles University"
                     types: [education, research]
                     country: CZ
                   - local_identifier: https://ror.org/03wp25384
                     entity_type: organisation
-                    name: "clarin eric"
-                    types: [facility, research_infrastructure]
+                    name: "CLARIN ERIC"
+                    types: [facility, srv_research_infrastructure]
                     country: NL
 
 #some additional organisation types should be added, see below
 
-      apiprofile:
+      srv_api_profile:
         type: object
-        description: api profile (endpoint + one or more spec document urls).
-        required: ["dcat:endpointurl", "schema:url"]
+        description: API profile (endpoint + one or more spec document urls).
+        required: ["dcat:endpointURL", "schema:url"]
         properties:
-          "dcat:endpointurl":
+          "dcat:endpointURL":
             minitems: 1
             maxitems: 1
             type: array
@@ -397,16 +436,16 @@ actions:
               type: string
               format: uri
         example: 
-          "dcat:endpointurl":
+          "dcat:endpointURL":
             - "https://lindat.mff.cuni.cz/services/udpipe/api/process"
           "schema:url":
             - "https://lindat.mff.cuni.cz/services/udpipe/"
             - "https://lindat.mff.cuni.cz/services/udpipe/api-reference.php"
             - "https://ufal.mff.cuni.cz/udpipe"
 
-  - target: $.components.schemas.service
+  - target: $.components.schemas.Service
 #
-# facilityportal is a special facilityportal class to model place and organisation facilitation a service
+# FacilityPortal is a special class to model place and organisation facilitation a service
 # alternatively this can be done by adding types to venue and/or organisation
 #
     update:
@@ -428,10 +467,11 @@ actions:
 #adapting 'Venue' can also model 'Portal' functionality
 #add "portal" as a Venue type
     update:
-        - portal
+        - srv_portal
   - target: $.components.schemas.Venue.allOf[1].properties
     update:
       services:
+        description: An array of Service objects that are discoverable (catalog) and accessible through the Venue/Portal
         type: array
         items:
           $ref: '#/components/schemas/Service'
@@ -447,7 +487,7 @@ actions:
 # note frapo lacks: (software) service, (research) infrastructure etc.
 # EOSC profiles v5 and dcat offers match
     update:
-      - portal
-      - research_infrastructure
-      - hosting_organisation
+      - srv_portal
+      - srv_research_infrastructure
+      - srv_hosting_organisation
 

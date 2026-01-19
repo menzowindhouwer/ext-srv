@@ -149,11 +149,6 @@ In SKG-IF, it is used to link to entities belonging to the following classes (ra
     rdfs:comment "The disciplines for which a Service, Data source is dedicated. The disciplines must be specified using the Library of Congress Classification codes, available at https://id.loc.gov/authorities/classification (e.g. `PA3000-PA3049` for classical literature). In case a Data source is discipline agnostic, the string `all` should be specified." ;
     rdfs:isDefinedBy dcterms: .
 
-datacite:github a datacite:IdentifierScheme,
-        owl:NamedIndividual ;
-    rdfs:label "datacite:github (SKG-IF labels: ra_github)" ;
-    rdfs:isDefinedBy datacite: .
-
 foaf:homepage a owl:ObjectProperty ;
     rdfs:label "foaf:homepage (SKG-IF labels: website)" ;
     dc:description """In SKG-IF, it is used in the following classes (domain):
@@ -169,6 +164,10 @@ skos:inScheme a owl:ObjectProperty ;
 
 skos:prefLabel a owl:DatatypeProperty ;
     rdfs:label "skos:prefLabel (SKG-IF labels: labels)" ;
+    rdfs:isDefinedBy skos: .
+
+skos:altLabel a owl:DatatypeProperty ;
+    rdfs:label "skos:altLabel (SKG-IF labels: other_names)" ;
     rdfs:isDefinedBy skos: .
 
 ############################
@@ -215,10 +214,11 @@ In SKG-IF, it is used to indicate geographic & administrative areas from  https:
     rdfs:domain srv:Service ;
     rdfs:isDefinedBy srv: .
 
-srv:hasTopic a owl:ObjectProperty ;
+srv:hasTopics a owl:ObjectProperty ;
     rdfs:label "has topic" ;
     rdfs:domain srv:Service ;
     rdfs:range fabio:SubjectTerm ;
+    rdfs:subPropertyOf dcterms:subject ;
     dc:description "Links a Service to one or more topics defined in SKG-IF." ;
     dc:description """In SKG-IF, it is used in the following classes (domain):
 * srv:Service
@@ -281,6 +281,7 @@ In SKG-IF, it is used to indicate the languages (identifiers)the Service can pro
     rdfs:range lvont:Language ;
     rdfs:isDefinedBy srv: .
 
+#not used for now
 schema:provider a owl:ObjectProperty ;
     rdfs:domain srv:Service ;
     rdfs:range srv:FacilityPortal .
@@ -341,7 +342,6 @@ srv:FacilityPortal a owl:Class ;
 # "A place or installation built or designed to serve a specific function or provide a specific service
 # 
 # portal -> dcat:Catalog ( lacking supporting facilities and expertise offering)
-# facility -> frapo: facility (is already used in skg-if organisation)
 # hosting-legal-entity/provider/operator -> eosc-profiles (v5) hostingLegalEntity
 # research-infrastructure -> eosc-profiles (v5) mentioned 
 # see https://eosc-provider-profile.readthedocs.io/en/5.0/elements.html
@@ -391,15 +391,16 @@ srv:Service a owl:Class ;
     rdfs:subClassOf schema:SoftwareApplication ;
     dc:description """The properties that can be used with this class are:
 * datacite:hasIdentifier -[0..N]-> datacite:Identifier
+* skos:prefLabel -[1..N]-> rdfs:Literal
+* skos:altLabel -[0..N]-> rdfs:Literal
 * dcterms:description -[0..N]-> rdfs:langString
 * srv:website -[0..1]-> foaf:Document
 * srv:audienceJurisdiction -[0..N]-> xsd:string
 * srv:intendedAudienceRole -[0..N]-> skos:Concept 
+* dcterms:subject -[0..N]-> owl:Thing
 * srv:invocationType -[0..N]-> skos:Concept 
 * srv:eoscLifeCycleStatus -[0..1]-> skos:Concept 
 * srv:geographicalAvailability -[0..N]-> owl:Thing
-* dcterms:subject -[0..N]-> owl:Thing
-* srv:hasTopic -[0..N]-> fabio:SubjectTerm
 * srv:supportedLanguage -[0..N]-> lvont:Language
 * srv:isPartOfResearchInfrastructure -[0..N]-> foaf:Organization
 * srv:hasHostingOrganisation -[0..N]-> foaf:Organization
@@ -411,9 +412,9 @@ srv:Service a owl:Class ;
 * srv:isDeploymentOf -[0..N]-> schema:SoftwareSourceCode
 * srv:isDeploymentOf -[0..N]-> skg:research_product
 * srv:relatedResearchProduct -[0..N]-> skg:research_product
+* dcterms:subject -[0..N]-> fabio:SubjectTerm
 * srv:hasVenue -[0..1]-> skg:Venue
-* skos:prefLabel -[1..N]-> rdfs:Literal
-* skos:altLabel -[0..N]-> rdfs:Literal""" ;
+* schema:isAccessibleForFree -[0..1]-> xsd:boolean """ ;
     rdfs:isDefinedBy srv: .
 
 ############################
