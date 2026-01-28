@@ -7,21 +7,21 @@ nav_order: 2
 ---
 
 *Please note that the Service extension is still work in progress*
-*this extension ndd file was previously names "SoftwareExtension"
+*this extension md file was previously named "SoftwareExtension"
 
 # SKG-IF Service Extension
 
 A Service is a type of software application or component that provides specific 
 functionality or operations over a network, often via the internet, and is typically accessed 
 through an interface such as an API or a web application.
-(note Service is renaming of Software Service for which still used in many discussion documents)
+(note: Service is renaming of Software Service, which is still used in many OSTrails discussion documents)
 
 
 
 ## Properties
 
 The properties set was suggested and informed from a number of examples both thematic and general:
-- The different CMDI schema for tools & services used in the [VLO catalogue], esp the  [UDPipe example] 
+- The different CMDI schema for tools & services used in the [VLO catalogue], esp the [UDPipe example] 
 - [SSHOMP catalogue] (tools and services) different examples
 - [ELG catalogue] (tools and services) different examples
 - [CLARIN LR Switchboard schema]
@@ -102,7 +102,7 @@ The object is a dictionary, the keys represent language codes following [ISO 639
 
 ### `audience_byrole`
 *Object* (optional): the audience(s) that the service is intended to be used by
-This can  both express desire and/or design of the service operators. Values are mandatory taken from 
+This can both express desire and/or design of the service operators. Values are mandatory taken from 
 the https://vocabs.sshopencloud.eu/vocabularies/sshoc-audience/audienceScheme 
 ```json
     "@context": {
