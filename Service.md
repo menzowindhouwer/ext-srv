@@ -199,7 +199,7 @@ Values provided as [ISO 369-3] language codes via the [Lexvo] vocabulary: http:/
     "@context": {
        "lexvo-iso639-3": "http://lexvo.org/id/iso639-3/"
      },
-     "supported_language": ["lexvo-iso639-3:de","lexvo-iso639-3:nl"]
+     "supported_language": ["lexvo-iso639-3:ger","lexvo-iso639-3:dut"]
 ```
 
 ### `topics`
