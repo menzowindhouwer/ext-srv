@@ -204,7 +204,7 @@ Values provided as [ISO 369-3] language codes via the [Lexvo] vocabulary: http:/
 
 ### `topics`
 *List* (optional):  [Topic] object identifiers relevant for the scope (topic) of a [Service].
-Note this is description is not consistent with other examples , should be discussed and repaired.
+_HOTE:_ this is description is not consistent with other examples , should be discussed and repaired.
 
 ```json
     "topics":  [
